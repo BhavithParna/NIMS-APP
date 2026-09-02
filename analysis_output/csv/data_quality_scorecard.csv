@@ -1,0 +1,4 @@
+dataset,rows,columns,usable_columns,completeness,consistency,validity,uniqueness,structure,documentation,ml_readiness,OVERALL,verdict
+APACHE 4.xlsx (Sheet1),78,49,47,100.0,91.5,97.0,100.0,65,25,50.6,77.2,Immaculately complete physiology; NO outcome recorded; Sheet2 is a duplicate; n=78 too small for modelling.
+NIMS TRIAGE 2023.xlsx (unified register),1311,17,15,96.8,80.0,98.0,98.8,45,20,88.5,80.2,"Good target + clean vitals, but split across sheets by sex, headerless Sheet3, no patient ID, cryptic '=1' headers."
+NIMS TRIAGE 2024 (Responses).xlsx,1125,36,30,98.7,80.0,97.5,99.3,80,55,92.1,88.1,"Best of the three: structured ABCDE form, 5-class ESI target, 1125 rows; but free-text chaos, rater effects, no outcome."

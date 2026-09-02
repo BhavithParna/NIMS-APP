@@ -1,0 +1,1094 @@
+<title>Who Triaged You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --ground:#eef1f1; --surface:#fbfcfc; --surface-2:#f2f5f5;
+  --rule:#d2dbdb; --rule-soft:#e2e8e8;
+  --ink:#0f1719; --ink-2:#3b4a4d; --ink-3:#68787b;
+  --accent:#0b6068; --accent-soft:#e0eced; --accent-ink:#08484e;
+  --ok:#2c6440; --ok-soft:#e2eee6;
+  --warn:#8c5200; --warn-soft:#f4ebdd;
+  --bad:#96322a; --bad-soft:#f4e4e2;
+  --shadow:0 1px 2px rgba(15,23,25,.05),0 8px 24px -16px rgba(15,23,25,.22);
+  --measure:68ch;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0c1214; --surface:#141c1e; --surface-2:#1a2427;
+    --rule:#2c393c; --rule-soft:#212c2f;
+    --ink:#e6ecec; --ink-2:#b3c1c2; --ink-3:#8b9b9d;
+    --accent:#57b3bb; --accent-soft:#16333a; --accent-ink:#8ad2d8;
+    --ok:#77b98c; --ok-soft:#1a2f22;
+    --warn:#d3a15c; --warn-soft:#33260f;
+    --bad:#e0857b; --bad-soft:#361d1a;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0c1214; --surface:#141c1e; --surface-2:#1a2427;
+  --rule:#2c393c; --rule-soft:#212c2f;
+  --ink:#e6ecec; --ink-2:#b3c1c2; --ink-3:#8b9b9d;
+  --accent:#57b3bb; --accent-soft:#16333a; --accent-ink:#8ad2d8;
+  --ok:#77b98c; --ok-soft:#1a2f22;
+  --warn:#d3a15c; --warn-soft:#33260f;
+  --bad:#e0857b; --bad-soft:#361d1a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:"Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--accent-soft);color:var(--accent-ink)}
+.shell{max-width:1200px;margin:0 auto;padding:0 24px 96px}
+.cols{display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:1040px){.cols{grid-template-columns:214px minmax(0,1fr);gap:56px;align-items:start}}
+
+.mast{padding:64px 0 34px;border-bottom:2px solid var(--ink)}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11.5px;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 22px;
+  display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;
+}
+.eyebrow span{color:var(--ink-3)}
+h1{
+  font-family:Spectral,Georgia,serif;font-weight:700;
+  font-size:clamp(2.3rem,5.6vw,3.9rem);line-height:1.03;letter-spacing:-.02em;
+  margin:0;text-wrap:balance;max-width:18ch;
+}
+.deck{
+  font-family:Spectral,Georgia,serif;font-size:clamp(1.05rem,2.2vw,1.3rem);line-height:1.5;
+  color:var(--ink-2);max-width:58ch;margin:22px 0 0;text-wrap:pretty;
+}
+.deck strong{color:var(--ink);font-weight:600}
+
+/* go / no-go ledger */
+.ledger{margin:34px 0 0;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.led-row{background:var(--surface);padding:14px 17px;display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:start}
+.led-row.head{background:var(--surface-2)}
+.led-h{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.led-what{font-weight:600;font-size:15.5px;line-height:1.3}
+.led-why{grid-column:2;font-size:14.5px;color:var(--ink-2);line-height:1.45;margin:0;max-width:66ch}
+
+.toc{padding:40px 0 0}
+@media(min-width:1040px){.toc{position:sticky;top:0;max-height:100vh;overflow-y:auto;padding:54px 0 40px}}
+.toc-h{font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.toc a{display:grid;grid-template-columns:26px 1fr;gap:6px;padding:4px 0;text-decoration:none;color:var(--ink-2);font-size:14px;line-height:1.35;border-radius:2px}
+.toc a:hover{color:var(--accent)}
+.toc a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.toc-n{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums;padding-top:2px}
+
+section{padding:52px 0 0;scroll-margin-top:16px}
+.sec-head{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;margin:0 0 10px}
+.sec-n{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.06em;padding-top:.35em}
+h2{font-family:Spectral,Georgia,serif;font-weight:600;font-size:clamp(1.65rem,3.4vw,2.25rem);line-height:1.12;letter-spacing:-.015em;margin:0;text-wrap:balance}
+h3{font-family:Spectral,Georgia,serif;font-weight:600;font-size:1.26rem;line-height:1.25;margin:36px 0 10px;text-wrap:balance}
+h4{font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:28px 0 10px}
+p{margin:0 0 15px;max-width:var(--measure);text-wrap:pretty}
+li{max-width:var(--measure)}
+a{color:var(--accent);text-underline-offset:2px}
+strong{font-weight:600}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.87em}
+code{background:var(--surface-2);padding:.1em .34em;border-radius:2px;border:1px solid var(--rule-soft)}
+ul,ol{margin:0 0 16px;padding-left:1.25em}
+ul li,ol li{margin-bottom:7px}
+ul li::marker{color:var(--accent)}
+hr.rule{border:0;border-top:1px solid var(--rule);margin:44px 0 0}
+
+.tw{overflow-x:auto;margin:0 0 20px;border:1px solid var(--rule);border-radius:3px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;line-height:1.45}
+th,td{padding:9px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule-soft)}
+thead th{background:var(--surface-2);font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);border-bottom:1px solid var(--rule);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;font-size:13px}
+td.mono{font-family:"IBM Plex Mono",monospace;font-size:12.5px}
+tbody tr:hover{background:var(--surface-2)}
+caption{caption-side:bottom;text-align:left;padding:9px 13px;font-size:13px;color:var(--ink-3);border-top:1px solid var(--rule-soft)}
+
+.pill{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:2px;border:1px solid}
+.pill.yes{color:var(--ok);background:var(--ok-soft);border-color:var(--ok)}
+.pill.maybe{color:var(--warn);background:var(--warn-soft);border-color:var(--warn)}
+.pill.no{color:var(--bad);background:var(--bad-soft);border-color:var(--bad)}
+
+.note{margin:0 0 22px;padding:15px 18px;background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:0 3px 3px 0;box-shadow:var(--shadow)}
+.note.alert{border-left-color:var(--bad)}
+.note.flag{border-left-color:var(--warn)}
+.note-l{font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 7px}
+.note.alert .note-l{color:var(--bad)}
+.note.flag .note-l{color:var(--warn)}
+.note p:last-child{margin-bottom:0}
+.note ol,.note ul{margin-bottom:0}
+
+/* protocol spec sheet */
+.spec{margin:0 0 24px;border:1px solid var(--rule);border-radius:3px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+.spec-row{display:grid;grid-template-columns:1fr;gap:2px;padding:13px 17px;border-bottom:1px solid var(--rule-soft)}
+@media(min-width:700px){.spec-row{grid-template-columns:168px 1fr;gap:20px}}
+.spec-row:last-child{border-bottom:0}
+.spec-row:nth-child(odd){background:var(--surface-2)}
+.spec-k{font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding-top:4px}
+.spec-v{margin:0;font-size:15.5px;line-height:1.5;max-width:68ch}
+.spec-v ul,.spec-v ol{margin:6px 0 0;padding-left:1.1em}
+.spec-v li{margin-bottom:5px;font-size:15px}
+.spec-v p{margin:0 0 8px}
+.spec-v p:last-child{margin-bottom:0}
+
+/* hypothesis card */
+.hyp{margin:0 0 20px;padding:20px 22px;background:var(--accent-soft);border-radius:3px;border:1px solid var(--rule)}
+.hyp-l{font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink);margin:0 0 8px}
+.hyp p{margin:0;font-family:Spectral,Georgia,serif;font-size:1.15rem;line-height:1.45;color:var(--ink);max-width:62ch}
+
+/* ranked candidates */
+.rank td:first-child{font-weight:600}
+.rank .sc{font-family:"IBM Plex Mono",monospace;font-size:12.5px;text-align:center;font-variant-numeric:tabular-nums}
+
+/* rating bars */
+.rate{display:grid;gap:0;margin:0 0 20px;border:1px solid var(--rule);border-radius:3px;overflow:hidden;background:var(--surface)}
+.rate-row{display:grid;grid-template-columns:1fr 84px auto;gap:14px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--rule-soft)}
+.rate-row:last-child{border-bottom:0}
+.rate-row.tot{background:var(--surface-2);font-weight:600}
+.rate-n{font-size:15px}
+.bar{position:relative;height:7px;background:var(--surface-2);border:1px solid var(--rule-soft);border-radius:1px}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:1px;display:block}
+.bar.b-warn i{background:var(--warn)}
+.bar.b-bad i{background:var(--bad)}
+.rate-v{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;min-width:4.2ch;text-align:right}
+
+/* execution timeline */
+.phases{list-style:none;counter-reset:ph;margin:0 0 20px;padding:0}
+.phases > li{counter-increment:ph;display:grid;grid-template-columns:34px 1fr;gap:16px;padding:18px 0;border-top:1px solid var(--rule);max-width:none;margin:0}
+.phases > li:last-child{border-bottom:1px solid var(--rule)}
+.phases > li::before{content:"P" counter(ph);font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:var(--accent);padding-top:2px}
+.ph-t{font-weight:600;font-size:16px;margin:0 0 4px;display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
+.ph-w{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.phases ul{margin:6px 0 0;padding-left:1.05em}
+.phases li li{font-size:14.5px;margin-bottom:4px;max-width:64ch}
+
+/* bias grid */
+.bias th:first-child{width:22%}
+
+.colophon{margin:64px 0 0;padding:24px 0 0;border-top:2px solid var(--ink);font-family:"IBM Plex Mono",monospace;font-size:11.5px;line-height:1.8;color:var(--ink-3);letter-spacing:.02em}
+.colophon b{color:var(--ink-2);font-weight:500}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="shell">
+
+<header class="mast">
+  <p class="eyebrow">Study design <span>/</span> 20 August 2026 <span>/</span> companion to the forensic report</p>
+  <h1>Who Triaged You</h1>
+  <p class="deck">There is one publishable paper in these three workbooks, and it is not the one I
+  recommended yesterday. The before/after instrument comparison does not survive contact with the data —
+  every candidate outcome is null or untestable. What does survive is sharper and more interesting:
+  <strong>the same patient would plausibly receive a different urgency rating depending on which
+  clinician assessed them</strong>, and that variation is measurable, replicable across two independent
+  instruments, and not explained by physiology.</p>
+
+  <div class="ledger">
+    <div class="led-row head"><span class="led-h">Decision</span><span class="led-h">Rationale</span></div>
+    <div class="led-row">
+      <span class="led-what"><span class="pill yes">Go</span></span>
+      <span class="led-what">2024–25 triage cohort · primary study</span>
+      <p class="led-why">n = 1,122 with a target, 505 events, 33 raters, full ABCDE physiology, ICC 0.113
+      (95% CI 0.041–0.205), median odds ratio 2.0–2.7 between clinicians. Adequately powered, structurally clean.</p>
+    </div>
+    <div class="led-row">
+      <span class="led-what"><span class="pill maybe">Support</span></span>
+      <span class="led-what">2023 triage cohort · replication arm only</span>
+      <p class="led-why">Independent replication of the clinician-variation finding under a different
+      instrument (ICC 0.074, 95% CI 0.016–0.186). <strong>Not</strong> a before/after comparator — see §4.</p>
+    </div>
+    <div class="led-row">
+      <span class="led-what"><span class="pill no">Stop</span></span>
+      <span class="led-what">Before/after instrument evaluation</span>
+      <p class="led-why">Completeness was already at ceiling (97.2% → 96.1%, RD −1.1 pp, 95% CI −2.5 to +0.4,
+      p = 0.17). Within-rater acuity change +2.0 pp (95% CI −16.8 to +20.9). ICC difference +0.039 (95% CI
+      −0.098 to +0.146). Three nulls with confidence intervals too wide to be informative.</p>
+    </div>
+    <div class="led-row">
+      <span class="led-what"><span class="pill no">Stop</span></span>
+      <span class="led-what">APACHE cohort · any analysis</span>
+      <p class="led-why">No outcome variable exists. 78 records. Excluded from the paper entirely until
+      seven specific fields are retrieved from the hospital record — specified in §7.</p>
+    </div>
+  </div>
+</header>
+
+<div class="cols">
+
+<nav class="toc" aria-label="Contents">
+  <p class="toc-h">Contents</p>
+  <ol>
+    <li><a href="#s1"><span class="toc-n">01</span><span>What I got wrong</span></a></li>
+    <li><a href="#s2"><span class="toc-n">02</span><span>Candidate questions, ranked</span></a></li>
+    <li><a href="#s3"><span class="toc-n">03</span><span>The protocol</span></a></li>
+    <li><a href="#s4"><span class="toc-n">04</span><span>Harmonisation limits</span></a></li>
+    <li><a href="#s5"><span class="toc-n">05</span><span>Prediction component</span></a></li>
+    <li><a href="#s6"><span class="toc-n">06</span><span>Complaint-text substudy</span></a></li>
+    <li><a href="#s7"><span class="toc-n">07</span><span>The APACHE data request</span></a></li>
+    <li><a href="#s8"><span class="toc-n">08</span><span>Bias inventory</span></a></li>
+    <li><a href="#s9"><span class="toc-n">09</span><span>Paper architecture</span></a></li>
+    <li><a href="#s10"><span class="toc-n">10</span><span>Figures &amp; tables</span></a></li>
+    <li><a href="#s11"><span class="toc-n">11</span><span>Publication risk</span></a></li>
+    <li><a href="#s12"><span class="toc-n">12</span><span>Ratings</span></a></li>
+    <li><a href="#s13"><span class="toc-n">13</span><span>Execution plan</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ══ 1 ══ -->
+<section id="s1">
+  <div class="sec-head"><span class="sec-n">01</span><h2>What I got wrong, and what replaced it</h2></div>
+
+  <p>Yesterday's report called the 2023-vs-2024 instrument comparison “the most publishable thing in the
+  three files”. I tested it. It isn't — and the correction matters enough to lead with, because building
+  the paper around it would have produced a manuscript that dies in review.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Candidate before/after outcome</th><th>Result</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Documentation completeness of the four shared vitals</td>
+          <td>97.2% → 96.1%; risk difference <strong>−1.1 pp</strong> (95% CI −2.5 to +0.4), χ² = 1.9, p = 0.167</td>
+          <td><span class="pill no">Ceiling effect</span></td>
+        </tr>
+        <tr>
+          <td>Within-clinician change in high-acuity rate (12 raters using both forms)</td>
+          <td><strong>+2.0 pp</strong> (95% CI −16.8 to +20.9), paired t p = 0.82, Wilcoxon p = 0.42</td>
+          <td><span class="pill no">Uninformative</span></td>
+        </tr>
+        <tr>
+          <td>Change in between-clinician variability (ICC)</td>
+          <td>0.074 → 0.113; difference <strong>+0.039</strong> (95% CI −0.098 to +0.146), P(increase) = 0.74</td>
+          <td><span class="pill no">Underpowered</span></td>
+        </tr>
+        <tr>
+          <td>Breadth of physiological information captured</td>
+          <td>4 items → 12 items per encounter (3.97 → 11.91 documented)</td>
+          <td><span class="pill maybe">True but tautological</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The fourth row is the trap. The 2024 form captures airway, bilateral air entry, capillary refill,
+  GCS, pupils, focal deficit, temperature and pain at 95–100% — and the 2023 form captures them at 0%,
+  <em>because the fields do not exist on it</em>. That is a property of the form, not of clinician
+  behaviour. It can be described in one sentence of the Discussion. It cannot be an outcome, and a
+  reviewer will say so immediately.</p>
+
+  <p>There is also a hard structural ceiling: a before/after design has <strong>two</strong> units at the
+  level of the exposure. With one pre-period and one post-period you cannot separate the instrument from
+  everything else that changed between June 2023 and March 2025 — staffing, casemix, departmental policy,
+  seasonality. The measured casemix drift confirms the concern rather than allaying it: respiratory rate
+  SMD +0.232 and SpO₂ SMD −0.284 between eras, both beyond the conventional 0.10 balance threshold. No
+  amount of regression adjustment fixes a design with two time points.</p>
+
+  <div class="note">
+    <p class="note-l">What replaced it</p>
+    <p>The rater structure that was a <em>nuisance</em> in the prediction framing turns out to be the
+    substantive finding. Between-clinician variation in high-acuity designation is large, statistically
+    unambiguous (Kruskal–Wallis H = 131.3, p = 6×10⁻¹⁸), <strong>independently replicated in the 2023
+    cohort under a completely different instrument</strong> (H = 75.5, p = 2.9×10⁻¹¹), and <em>not</em>
+    explained by patient physiology. That is a paper.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 2 ══ -->
+<section id="s2">
+  <div class="sec-head"><span class="sec-n">02</span><h2>Candidate research questions, ranked</h2></div>
+
+  <p>Scored 1–5 on each axis. “Valid” means the design supports the causal or inferential claim being made,
+  not merely that the numbers can be computed.</p>
+
+  <div class="tw">
+    <table class="rank">
+      <thead>
+        <tr><th>Candidate question</th><th class="sc">Novel</th><th class="sc">Feasible</th><th class="sc">Valid</th>
+        <th class="sc">Clinical</th><th class="sc">ML</th><th class="sc">Publish</th><th>Verdict</th></tr>
+      </thead>
+      <tbody>
+        <tr style="background:var(--accent-soft)">
+          <td><strong>Q1.</strong> How much of ED triage acuity assignment is attributable to the patient's
+          physiology, and how much to which clinician performed the triage?</td>
+          <td class="sc">4</td><td class="sc">5</td><td class="sc">5</td><td class="sc">5</td><td class="sc">3</td><td class="sc">4</td>
+          <td><span class="pill yes">Selected</span></td>
+        </tr>
+        <tr>
+          <td><strong>Q2.</strong> Can routinely captured triage-time physiology reproduce clinician-assigned
+          high-acuity designation well enough to serve as a consistency reference?</td>
+          <td class="sc">2</td><td class="sc">5</td><td class="sc">4</td><td class="sc">4</td><td class="sc">4</td><td class="sc">3</td>
+          <td><span class="pill yes">Merged into Q1</span></td>
+        </tr>
+        <tr>
+          <td><strong>Q3.</strong> Does clinician-level variation persist across two structurally different
+          triage instruments and two independent patient cohorts?</td>
+          <td class="sc">3</td><td class="sc">5</td><td class="sc">4</td><td class="sc">4</td><td class="sc">1</td><td class="sc">4</td>
+          <td><span class="pill yes">Replication arm</span></td>
+        </tr>
+        <tr>
+          <td><strong>Q4.</strong> Can free-text complaints be mapped to ICD-10 chapters, and does adding
+          them improve acuity prediction over physiology alone?</td>
+          <td class="sc">3</td><td class="sc">3</td><td class="sc">3</td><td class="sc">3</td><td class="sc">4</td><td class="sc">3</td>
+          <td><span class="pill maybe">Secondary / separate</span></td>
+        </tr>
+        <tr>
+          <td><strong>Q5.</strong> Did the 2023→2024 form redesign improve documentation or reduce variability?</td>
+          <td class="sc">3</td><td class="sc">4</td><td class="sc"><strong>1</strong></td><td class="sc">3</td><td class="sc">1</td><td class="sc">1</td>
+          <td><span class="pill no">Rejected §1</span></td>
+        </tr>
+        <tr>
+          <td><strong>Q6.</strong> Do triage vitals predict ICU admission, deterioration or mortality?</td>
+          <td class="sc">4</td><td class="sc"><strong>1</strong></td><td class="sc"><strong>1</strong></td><td class="sc">5</td><td class="sc">4</td><td class="sc">1</td>
+          <td><span class="pill no">No outcome exists</span></td>
+        </tr>
+        <tr>
+          <td><strong>Q7.</strong> Does APACHE IV calibrate correctly in this ICU population?</td>
+          <td class="sc">3</td><td class="sc"><strong>1</strong></td><td class="sc">4</td><td class="sc">5</td><td class="sc">2</td><td class="sc">2</td>
+          <td><span class="pill no">Needs §7 data</span></td>
+        </tr>
+        <tr>
+          <td><strong>Q8.</strong> Do lactate and base deficit add prognostic value over APACHE IV?</td>
+          <td class="sc">3</td><td class="sc"><strong>1</strong></td><td class="sc">2</td><td class="sc">4</td><td class="sc">2</td><td class="sc">1</td>
+          <td><span class="pill no">n = 78, EPV 0.7</span></td>
+        </tr>
+        <tr>
+          <td><strong>Q9.</strong> Sex differences in ED presentation and acuity assignment</td>
+          <td class="sc">2</td><td class="sc">5</td><td class="sc">3</td><td class="sc">3</td><td class="sc">1</td><td class="sc">2</td>
+          <td><span class="pill maybe">Secondary analysis</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>Q1 and Q2 are one paper, not two.</strong> The model in Q2 is the instrument that makes Q1
+  answerable: you need a physiology-based expectation before you can say how far a given clinician departs
+  from it. Splitting them yields two thin papers; combined they make one with a clear argument.</p>
+
+  <p>Q6 deserves an explicit statement because it is the study everyone reaches for first. <strong>There is
+  no clinical outcome anywhere in these files</strong> — no disposition, no admission flag, no mortality,
+  no deterioration marker. Any model trained here predicts <em>what a nurse wrote down</em>, not what
+  happened to the patient. Every claim in this protocol is written to respect that boundary.</p>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 3 ══ -->
+<section id="s3">
+  <div class="sec-head"><span class="sec-n">03</span><h2>The protocol</h2></div>
+
+  <div class="hyp">
+    <p class="hyp-l">Research question</p>
+    <p>Among adult and paediatric patients triaged in a single tertiary emergency department, what
+    proportion of the variation in high-acuity (ESI ≤ 2) designation is attributable to between-clinician
+    differences rather than to documented patient physiology, and does a physiology-based reference model
+    reproduce clinician assignment consistently across clinicians?</p>
+  </div>
+
+  <div class="spec">
+    <div class="spec-row"><span class="spec-k">Primary hypothesis</span>
+      <div class="spec-v"><p>Between-clinician variation in high-acuity designation is substantial and
+      persists after adjustment for documented triage physiology. Formally: the between-clinician variance
+      component τ² in a random-intercept logistic model is greater than zero, with a median odds ratio
+      (MOR) ≥ 1.5 after adjustment. <em>Preliminary estimate: MOR 2.04 (method-of-moments, clinicians with
+      ≥ 20 encounters) to 2.65 (variational Bayes, all clinicians).</em></p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Secondary hypotheses</span>
+      <div class="spec-v"><ol>
+        <li><strong>H2.</strong> Documented physiology discriminates high-acuity designation with AUROC
+        ≥ 0.70 under clinician-grouped cross-validation. <em>Preliminary: 0.718 (LogReg) / 0.733 (HistGB).</em></li>
+        <li><strong>H3.</strong> Model discrimination is heterogeneous across clinicians — the per-clinician
+        AUROC range spans more than 0.20. <em>Preliminary: median 0.735, range 0.474–0.896.</em></li>
+        <li><strong>H4.</strong> Clinician-level variation replicates in the independent 2023 cohort under a
+        different instrument (ICC > 0 with a 95% CI excluding zero). <em>Preliminary: 0.074, CI 0.016–0.186.</em></li>
+        <li><strong>H5.</strong> Adding ICD-chapter features derived from free text improves discrimination
+        by ΔAUROC ≥ 0.02 over physiology alone. <em>Exploratory; see §6.</em></li>
+      </ol></div></div>
+
+    <div class="spec-row"><span class="spec-k">Objective</span>
+      <div class="spec-v"><p>To quantify and partition the sources of variation in emergency triage acuity
+      assignment, and to evaluate whether a physiology-based reference model can function as a
+      consistency-audit tool for triage quality improvement — explicitly <em>not</em> as an autonomous
+      acuity predictor.</p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Design</span>
+      <div class="spec-v"><p>Retrospective observational analysis of a prospectively collected single-centre
+      triage register, with a pre-specified multilevel variance-decomposition analysis, an internally and
+      temporally validated prediction model, and an independent replication cohort. Reported per
+      <strong>STROBE</strong> (observational) and <strong>TRIPOD+AI</strong> (prediction model).</p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Setting</span>
+      <div class="spec-v"><p>Emergency department of a single tertiary-care hospital. Triage assessments
+      recorded electronically at the point of triage on a structured ABCDE instrument.</p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Population</span>
+      <div class="spec-v"><p>All consecutive triage encounters recorded on the structured instrument between
+      December 2024 and August 2025 (n = 1,125). Replication cohort: all encounters on the preceding
+      instrument, June 2023 – August 2024 (n = 1,311).</p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Inclusion</span>
+      <div class="spec-v"><ul>
+        <li>Triage encounter recorded on the index instrument within the study window</li>
+        <li>A recorded ESI category of 1–5 (primary cohort) or red-flag designation (replication cohort)</li>
+        <li>At least one documented vital sign</li>
+      </ul></div></div>
+
+    <div class="spec-row"><span class="spec-k">Exclusion</span>
+      <div class="spec-v"><ul>
+        <li>Missing or uninterpretable acuity designation (n = 3 in the primary cohort)</li>
+        <li>Test or template rows — e.g. the 13 records carrying the literal string <code>Option 1</code></li>
+        <li>Encounters by clinicians contributing &lt; 20 encounters, for the <em>variance-component</em>
+        analysis only; retained in all prediction analyses with a sensitivity analysis at the ≥ 10 threshold</li>
+        <li>Physiologically impossible values, set to missing rather than deleting the record — pre-specified
+        ranges: HR 20–250, SBP 50–300, DBP 20–200, RR 4–60, SpO₂ 40–100, age 0–110</li>
+      </ul>
+      <p><em>Do not exclude patients for missing vitals</em> — missingness is itself informative and
+      complete-case deletion would bias the acuity distribution.</p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Comparison groups</span>
+      <div class="spec-v"><p>There is no exposure and no intervention. The unit of comparison is the
+      <strong>triaging clinician</strong>, modelled as a random effect. This is a variance-partitioning
+      study, not a between-group comparison — framing it as one is the single most likely source of an
+      unwarranted causal claim.</p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Primary outcome</span>
+      <div class="spec-v"><p><strong>High-acuity designation</strong>: clinician-assigned ESI 1 or 2 versus
+      3, 4 or 5. Binary, 45.0% prevalence, 505 events of 1,122. Chosen over the full 5-level scale because
+      ESI 5 contains only 14 records and because the 1–2 / 3–5 split maps onto the operational decision of
+      resuscitation-area allocation.</p>
+      <p class="mono" style="color:var(--ink-3);font-size:13px">This is a clinician-assigned label, not a
+      patient outcome. Every result statement must say so.</p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Secondary outcomes</span>
+      <div class="spec-v"><ul>
+        <li>Ordinal ESI 1–5 (proportional-odds mixed model, sensitivity)</li>
+        <li>Per-clinician observed/expected high-acuity ratio</li>
+        <li>Per-clinician model discrimination (AUROC)</li>
+        <li>Model calibration: intercept, slope, Brier score</li>
+      </ul></div></div>
+
+    <div class="spec-row"><span class="spec-k">Predictors</span>
+      <div class="spec-v"><p>Sixteen variables, all available <em>at the moment of triage assessment</em>:
+      age, sex, heart rate, systolic BP, diastolic BP, respiratory rate, SpO₂, temperature, pain score
+      (NRS), GCS total (E+V+M), shock index (HR/SBP), capillary refill &gt; 3 s, airway not patent, focal
+      neurological deficit, abnormal bilateral air entry, abnormal pupils.</p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Excluded as leakage</span>
+      <div class="spec-v"><ul>
+        <li><code>Area Triaged</code> — assigned <em>with</em> the ESI, not before it. Including it inflates
+        AUROC from 0.733 to <strong>0.854</strong>; 126 of 129 ESI-1 patients went to Red Triage</li>
+        <li>All five <code>Intervention (*)</code> fields — record what was done <em>in response</em> to the assessment</li>
+        <li><code>Disposition</code>, <code>GRBS</code> — post-triage, and almost entirely empty</li>
+        <li>The pre-computed <code>GCS</code> total column — 7/1,125 filled; recompute from E+V+M</li>
+        <li>Shock index <em>and</em> its components together in the same interpretable model — collinear by
+        construction; retain SI only in the nonlinear model, and report the linear model without it</li>
+      </ul></div></div>
+
+    <div class="spec-row"><span class="spec-k">Confounders</span>
+      <div class="spec-v"><p>For the variance-component analysis: patient physiology (the 16 predictors),
+      time of day, day of week, and calendar month (case-mix and crowding proxies). Clinician role and
+      years of experience are <strong>not available</strong> and their absence is a stated limitation —
+      they are the most plausible explanation for the between-clinician differences and cannot be tested.</p></div></div>
+  </div>
+
+  <h3>Statistical analysis plan</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Analysis</th><th>Method</th><th>Why this method</th></tr></thead>
+      <tbody>
+        <tr><td>Cohort description</td><td>Median (IQR) for continuous, n (%) for categorical; no p-values in Table 1</td><td>Baseline testing in a single-cohort study tests nothing; ASA and journal guidance discourage it</td></tr>
+        <tr><td><strong>Primary: variance decomposition</strong></td><td>Random-intercept logistic regression, clinician as random effect; report τ², latent ICC, and <strong>median odds ratio</strong> with 95% CI by cluster bootstrap (2,000 resamples of clinicians)</td><td>MOR is directly interpretable on the odds scale and, unlike ICC, is comparable across models with different covariate sets. Cluster bootstrap respects the dependence structure</td></tr>
+        <tr><td>Unadjusted vs adjusted τ²</td><td>Fit null and fully adjusted models; report both</td><td><strong>Do not report the τ² difference as “variance explained.”</strong> The logistic odds ratio is non-collapsible — adjusted τ² rose from 1.04 to 1.36 here, which is expected, not paradoxical. Interpret as “clinician variation persists at every level of physiology”</td></tr>
+        <tr><td>Case-mix-adjusted clinician effects</td><td>Observed/expected high-acuity ratio per clinician from cross-validated model predictions, with funnel plot and exact binomial limits</td><td>Model-free companion to the MOR; robust to GLMM specification, and the form in which quality-improvement audiences read this kind of result</td></tr>
+        <tr><td>Robustness of τ²</td><td>Report both variational-Bayes and method-of-moments estimators</td><td>They disagree here (MOR 2.65 vs 2.04) because of small-cluster influence. Reporting one alone is fragile; reporting the range is defensible</td></tr>
+        <tr><td>Ordinal sensitivity</td><td>Mixed-effects proportional-odds model on ESI 1–5; test proportional-odds assumption</td><td>Confirms the finding is not an artefact of dichotomising at 2/3</td></tr>
+        <tr><td>Replication (2023)</td><td>Identical ICC and MOR computation on the red-flag label</td><td>External-instrument replication is the strongest available defence against the finding being a property of ESI specifically</td></tr>
+        <tr><td>Prediction model</td><td>See §5</td><td></td></tr>
+        <tr><td>Subgroups</td><td>Pre-specified, four only: sex, age (&lt; 18 / 18–64 / ≥ 65), trauma vs medical presentation, clinician volume tertile. Interaction tests, not separate models</td><td>Four is the limit at 505 events; more invites false positives and reviewers count them</td></tr>
+        <tr><td>Missing data</td><td>Multiple imputation by chained equations, 20 imputations, outcome and clinician included in the imputation model; complete-case as sensitivity</td><td>Missingness is 0.1–4.7% on physiology and demonstrably not random (it drifts with calendar month), so MICE is preferable to median imputation for the inferential models</td></tr>
+        <tr><td>Multiplicity</td><td>One primary hypothesis, no adjustment. Secondary hypotheses reported with CIs and labelled exploratory</td><td>Honest and conventional; avoids a Bonferroni penalty on a single pre-specified primary</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note flag">
+    <p class="note-l">The clustering correction that everything depends on</p>
+    <p>Mean cluster size is 32.1 encounters per clinician and the ICC is 0.113, giving a design effect of
+    <strong>4.53</strong>. The <strong>effective sample size is roughly 248, not 1,125.</strong> Any
+    confidence interval computed as though the 1,125 encounters were independent will be about
+    <strong>2.1× too narrow</strong>. This applies to the cohort description, the subgroup comparisons and
+    the model-performance intervals alike — not only the multilevel model.</p>
+  </div>
+
+  <h3>Sample size justification</h3>
+  <ul>
+    <li><strong>Variance component:</strong> 33 clinicians, 22 with ≥ 20 encounters. Reliable τ² estimation
+    conventionally wants ≥ 30 clusters; we are at the boundary, which is why the cluster bootstrap CI is
+    pre-specified rather than the model's asymptotic SE.</li>
+    <li><strong>Prediction model:</strong> 505 events, 16 predictors = <strong>31.6 events per
+    variable</strong>, comfortably above the EPV ≥ 10 rule. Riley's criteria for a model with C-statistic
+    0.72, prevalence 0.45 and 16 predictors require roughly 600–900 — satisfied at n = 1,122.</li>
+    <li><strong>What we are <em>not</em> powered for:</strong> the before/after contrasts of §1, any
+    three-way subgroup analysis, and detection of an ICC difference smaller than about 0.15.</li>
+  </ul>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 4 ══ -->
+<section id="s4">
+  <div class="sec-head"><span class="sec-n">04</span><h2>What can and cannot be harmonised across the two cohorts</h2></div>
+
+  <p>The 2023 cohort enters the paper only as a replication arm for the clinician-variation finding. Even
+  that limited use requires knowing exactly which variables mean the same thing in both eras.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Variable</th><th class="num">2023</th><th class="num">2024</th><th>Harmonisable?</th></tr></thead>
+      <tbody>
+        <tr><td>Age</td><td class="num">100%</td><td class="num">99.0%</td><td><span class="pill yes">Yes</span> identical definition</td></tr>
+        <tr><td>Sex</td><td class="num">100%</td><td class="num">100%</td><td><span class="pill yes">Yes</span> after recoding 1/0 → Male/Female; requires the 2023 sheet union first</td></tr>
+        <tr><td>Heart rate</td><td class="num">99.8%</td><td class="num">99.8%</td><td><span class="pill yes">Yes</span></td></tr>
+        <tr><td>Systolic / diastolic BP</td><td class="num">97.9%</td><td class="num">97.1%</td><td><span class="pill yes">Yes</span> both free-text <code>SBP/DBP</code>, same parser, same failure modes</td></tr>
+        <tr><td>Respiratory rate</td><td class="num">99.5%</td><td class="num">99.1%</td><td><span class="pill maybe">Numerically</span> but SMD +0.232 between eras — report, do not pool</td></tr>
+        <tr><td>SpO₂</td><td class="num">99.3%</td><td class="num">99.9%</td><td><span class="pill maybe">Numerically</span> but SMD −0.284 — the largest era difference in the dataset</td></tr>
+        <tr><td>Free-text complaint</td><td class="num">100%</td><td class="num">100%</td><td><span class="pill maybe">Only after</span> a common ICD-chapter mapping (§6)</td></tr>
+        <tr><td>Pain score</td><td class="num">0.3%</td><td class="num">100%</td><td><span class="pill no">No</span> effectively absent in 2023</td></tr>
+        <tr><td>Trauma / cardiac flags</td><td class="num">100% / 66.8%</td><td class="num">absent</td><td><span class="pill no">No</span> 2023 only</td></tr>
+        <tr><td>GCS, airway, air entry, capillary refill, pupils, focal deficit, temperature</td><td class="num">0%</td><td class="num">95–100%</td><td><span class="pill no">No</span> fields do not exist on the 2023 form</td></tr>
+        <tr><td><strong>Acuity label</strong></td><td class="num"><code>red=1</code></td><td class="num"><code>ESI 1–5</code></td><td><span class="pill no">Not equivalent</span> see below</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Is <code>red=1</code> equivalent to <code>ESI ≤ 2</code>? Tested, and the answer is no.</h3>
+  <p>I did not assume this. Three tests, all pre-specified as the condition for pooling:</p>
+  <ul>
+    <li><strong>Prevalence.</strong> 38.5% vs 45.0% — a 6.5 pp difference. Not disqualifying alone.</li>
+    <li><strong>Physiological profile of the designated-high group.</strong> SpO₂ SMD −0.279 between the two
+    “high acuity” groups, and −0.276 between the two “lower acuity” groups. The labels sit at
+    <em>different points on the physiological severity axis</em>.</li>
+    <li><strong>Discriminative structure.</strong> This is where they agree: within-era Cohen's <em>d</em>
+    separating high from low is +0.296 vs +0.302 for heart rate, +0.578 vs +0.419 for respiratory rate,
+    −0.391 vs −0.511 for SpO₂, and ~0 for systolic BP in both. The same physiology drives both labels in
+    the same direction with similar strength.</li>
+  </ul>
+
+  <div class="note alert">
+    <p class="note-l">Ruling</p>
+    <p>The two labels have <strong>similar discriminative structure but different thresholds</strong>. They
+    may therefore be used to answer the same <em>structural</em> question — “does clinician identity explain
+    variation in urgency designation?” — in each cohort separately, with the results reported side by side
+    and never pooled. They may <strong>not</strong> be treated as a single harmonised outcome, used as a
+    common target for one model, or compared as rates. If a reviewer asks for pooling, the answer is the
+    SpO₂ SMD of −0.279 and the 6.5 pp prevalence gap.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 5 ══ -->
+<section id="s5">
+  <div class="sec-head"><span class="sec-n">05</span><h2>The prediction component</h2></div>
+
+  <p>Scientifically defensible, with one framing condition: <strong>the model predicts a clinician's
+  label, not a patient's condition.</strong> Every performance number below is a measure of agreement with
+  clinical judgement, not of clinical accuracy. Framed that way it is a consistency instrument; framed any
+  other way it is an unvalidated clinical tool and should be rejected.</p>
+
+  <h3>Design</h3>
+  <div class="spec">
+    <div class="spec-row"><span class="spec-k">Target</span><p class="spec-v">ESI ≤ 2 vs ESI ≥ 3. n = 1,122; 505 events (45.0%)</p></div>
+    <div class="spec-row"><span class="spec-k">Models</span><div class="spec-v"><ol>
+      <li><strong>Reference:</strong> clinician identity alone (33 dummies) — establishes how much of the label is the rater</li>
+      <li><strong>Primary:</strong> multivariable logistic regression, 16 triage-time predictors, restricted cubic splines on age and the continuous vitals</li>
+      <li><strong>Comparator:</strong> gradient boosting, depth 3, 250 iterations, learning rate 0.06</li>
+      <li><strong>Negative control:</strong> the same model <em>with</em> <code>Area Triaged</code>, reported only to quantify the leakage a naive analysis would introduce</li>
+    </ol></div></div>
+    <div class="spec-row"><span class="spec-k">Validation</span><div class="spec-v"><ul>
+      <li><strong>Clinician-grouped 5-fold CV</strong> — the primary estimate. A random split leaks clinician style between train and test</li>
+      <li><strong>Temporal holdout</strong> — train ≤ 18 Apr 2025 (n = 841), test after (n = 281). Only 2 test records come from clinicians unseen in training</li>
+      <li>Optimism-corrected apparent performance via 500 bootstrap resamples for the logistic model</li>
+    </ul></div></div>
+    <div class="spec-row"><span class="spec-k">Metrics</span><div class="spec-v"><p>AUROC and AUPRC with bootstrap 95% CIs; sensitivity, specificity, PPV and NPV at a pre-specified 90%-sensitivity operating point; calibration intercept and slope with a flexible calibration curve; Brier score. Decision-curve analysis across threshold probabilities 0.1–0.6.</p></div></div>
+    <div class="spec-row"><span class="spec-k">Interpretability</span><div class="spec-v"><p>Logistic coefficients as adjusted odds ratios with CIs — the primary interpretable output. Permutation importance on the boosted model. <strong>SHAP only if</strong> the boosted model is retained as the final model and the nonlinearity is substantive; on a 16-variable tabular problem with ΔAUROC 0.015 it is decoration, and reviewers increasingly read gratuitous SHAP plots as a red flag.</p></div></div>
+  </div>
+
+  <h3>Preliminary results — already computed, and they discipline the claims</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Model / validation</th><th class="num">AUROC (95% CI)</th><th class="num">AUPRC</th><th class="num">Brier</th></tr></thead>
+      <tbody>
+        <tr><td>Clinician identity alone</td><td class="num">0.660</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td>Logistic, random 5-fold</td><td class="num">0.725</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td><strong>Logistic, clinician-grouped CV</strong></td><td class="num"><strong>0.718 (0.683–0.748)</strong></td><td class="num">0.707</td><td class="num">0.207</td></tr>
+        <tr><td><strong>Gradient boosting, clinician-grouped CV</strong></td><td class="num"><strong>0.733 (0.701–0.763)</strong></td><td class="num">0.717</td><td class="num">0.205</td></tr>
+        <tr><td>Logistic, temporal holdout</td><td class="num">0.738 (0.676–0.794)</td><td class="num">0.720</td><td class="num">0.204</td></tr>
+        <tr style="background:var(--bad-soft)"><td>With <code>Area Triaged</code> — leakage, negative control</td><td class="num">0.854</td><td class="num">—</td><td class="num">—</td></tr>
+      </tbody>
+      <caption>Gradient boosting beats logistic regression by ΔAUROC 0.015 with overlapping intervals. Report the logistic model as primary and the boosted model as a pre-specified comparator; do not claim a nonlinear advantage on this margin.</caption>
+    </table>
+  </div>
+
+  <div class="note alert">
+    <p class="note-l">The result that must not be buried</p>
+    <p>At the clinically required operating point — <strong>90% sensitivity</strong>, because under-triage
+    is the dangerous error — specificity collapses to <strong>0.21</strong>, PPV is 0.48 and NPV is 0.72.
+    A tool at that setting would flag roughly four of every five lower-acuity patients. This belongs in the
+    Abstract, not the Limitations. It is the honest reason the paper's conclusion is “consistency audit”
+    rather than “decision support”, and stating it plainly is what separates this manuscript from the many
+    triage-ML papers that report AUROC 0.73 and imply deployability.</p>
+  </div>
+
+  <h3>Heterogeneity of model performance across clinicians — hypothesis H3</h3>
+  <p>Among the 17 clinicians with ≥ 30 encounters, per-clinician AUROC of the grouped-CV model has a median
+  of 0.735 and a range of <strong>0.474 to 0.896</strong>; for <strong>2 of 17</strong> the model performs
+  no better than chance. This is arguably the most clinically actionable result in the study: a
+  physiology-based reference tracks some clinicians closely and is unrelated to others' judgements. Present
+  it as a caterpillar plot with bootstrap CIs, and resist the temptation to name the outliers as
+  “inaccurate” — there is no ground truth to say who is right.</p>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 6 ══ -->
+<section id="s6">
+  <div class="sec-head"><span class="sec-n">06</span><h2>Complaint-text substudy</h2></div>
+
+  <p>Feasible, genuinely useful, and best positioned as a <strong>secondary analysis within the main
+  paper</strong> rather than a separate NLP paper — the corpus is too small and too abbreviation-dense to
+  support a methods contribution.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>What the text actually looks like</th><th class="num">2023</th><th class="num">2024</th></tr></thead>
+      <tbody>
+        <tr><td>Records</td><td class="num">1,311</td><td class="num">1,125</td></tr>
+        <tr><td>Distinct strings (case-folded)</td><td class="num">897</td><td class="num">940</td></tr>
+        <tr><td>Strings occurring exactly once</td><td class="num">60.7%</td><td class="num">76.9%</td></tr>
+        <tr><td>Coverage by the 20 commonest strings</td><td class="num">24.3%</td><td class="num">12.5%</td></tr>
+        <tr><td>Contain a standard clinical abbreviation</td><td class="num">38.3%</td><td class="num">43.3%</td></tr>
+        <tr><td>Contain <code>?</code> (diagnostic uncertainty)</td><td class="num">4.4%</td><td class="num">6.9%</td></tr>
+        <tr><td>Median length</td><td class="num">15 chars</td><td class="num">23 chars</td></tr>
+      </tbody>
+      <caption>Reference list available: 1,194 entries, 1,133 with a parseable ICD-10 code across 22 chapters — present in both workbooks and never used to constrain entry.</caption>
+    </table>
+  </div>
+
+  <h3>Design</h3>
+  <div class="spec">
+    <div class="spec-row"><span class="spec-k">Label</span><div class="spec-v"><p><strong>ICD-10 chapter</strong> (22 classes), collapsed to the 8–10 chapters with ≥ 30 records plus “other”. <em>Not</em> the specific code: with 76.9% singleton strings and 1,133 candidate codes, code-level assignment cannot be validated at this sample size.</p></div></div>
+    <div class="spec-row"><span class="spec-k">Mapping pipeline</span><div class="spec-v"><ol>
+      <li>Build an abbreviation lexicon from the corpus (RTA, SOB, CVA, AKI, CKD, ACS, K/C/O…) — expansions adjudicated by a clinician, published as a supplement</li>
+      <li>Normalise: lowercase, expand abbreviations, strip qualifiers, split on <code>/</code> and <code>+</code></li>
+      <li>Candidate generation against the 1,133-entry reference list: exact → token-set fuzzy (rapidfuzz) → sentence-embedding cosine similarity</li>
+      <li>Assign chapter automatically where the top candidate exceeds a pre-set similarity threshold <em>and</em> leads the runner-up by a margin</li>
+    </ol></div></div>
+    <div class="spec-row"><span class="spec-k">Human review</span><div class="spec-v"><p>Two clinicians independently adjudicate (a) a random 20% sample of auto-assigned mappings and (b) <strong>all</strong> below-threshold cases. Report Cohen's κ for inter-adjudicator agreement; a third adjudicator resolves disagreements. Adjudication is performed <strong>blind to ESI</strong> — non-negotiable, since knowing the acuity would contaminate the feature.</p></div></div>
+    <div class="spec-row"><span class="spec-k">Low-confidence handling</span><div class="spec-v"><p>An explicit <code>unmappable</code> category, retained in the model rather than dropped. Report what fraction it represents; if it exceeds ~25% the substudy is reported as descriptive only.</p></div></div>
+    <div class="spec-row"><span class="spec-k">Leakage control</span><div class="spec-v"><ul>
+      <li>The lexicon and thresholds are fitted on the <strong>training folds only</strong> and applied unchanged to held-out folds</li>
+      <li>Adjudicators blind to ESI, to clinician identity and to model output</li>
+      <li>No embedding model fine-tuned on the outcome</li>
+      <li>Any complaint string that <em>encodes</em> the disposition (e.g. text naming a resuscitation-area referral) is removed before feature construction</li>
+    </ul></div></div>
+    <div class="spec-row"><span class="spec-k">Evaluation</span><div class="spec-v"><p>ΔAUROC of physiology + chapter features vs physiology alone, with a <strong>paired bootstrap CI on the difference</strong> under the same clinician-grouped folds — not two independently reported AUROCs. Pre-specified success threshold: ΔAUROC ≥ 0.02 with a CI excluding zero. Anything smaller is reported as “no meaningful improvement”, and reported anyway.</p></div></div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 7 ══ -->
+<section id="s7">
+  <div class="sec-head"><span class="sec-n">07</span><h2>The APACHE cohort: excluded, and exactly what would change that</h2></div>
+
+  <p>The APACHE data contributes <strong>nothing</strong> to this paper. There is no patient overlap with
+  either triage cohort (registration-number intersection = 0), so it cannot be linked; it is a different
+  care setting; and it has no outcome variable. Including it would be padding, and a reviewer would read it
+  as padding.</p>
+
+  <p>Separately, it is one afternoon of records-office work away from being its own worthwhile study.</p>
+
+  <h4>Request these seven fields for all 78 patients</h4>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Field</th><th>Definition to specify in the request</th><th>Enables</th></tr></thead>
+      <tbody>
+        <tr><td><strong>ICU mortality</strong></td><td>Alive / died at ICU discharge</td><td>Primary outcome for APACHE IV validation</td></tr>
+        <tr><td><strong>Hospital mortality</strong></td><td>Alive / died at hospital discharge — <em>this is what APACHE IV predicts</em></td><td>The correct comparator for the calculator's predicted risk</td></tr>
+        <tr><td><strong>ICU length of stay</strong></td><td>Admission to ICU discharge, in days</td><td>Validation of predicted LOS</td></tr>
+        <tr><td><strong>Hospital length of stay</strong></td><td>Admission to hospital discharge</td><td>Secondary</td></tr>
+        <tr><td><strong>Ventilation duration</strong></td><td>Hours of invasive ventilation</td><td>Secondary; 96% of the cohort is ventilated</td></tr>
+        <tr><td><strong>Discharge disposition</strong></td><td>Home / ward / another facility / died / discharged against advice</td><td>Competing-risk handling</td></tr>
+        <tr><td><strong>Readmission to ICU</strong></td><td>Within the same hospital stay, yes/no</td><td>Secondary</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Also request, if retrievable: date and time of ICU admission and discharge (to fix the two implausible
+  discharge dates), and confirmation of whether <code>Outcome</code> was left blank because it was never
+  collected or because it was recorded elsewhere.</p>
+
+  <h4>What 78 patients with outcomes can and cannot support</h4>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Analysis</th><th>Requirement</th><th>Status at n = 78</th></tr></thead>
+      <tbody>
+        <tr><td><strong>External validation of APACHE IV</strong> — calibration and discrimination of an <em>existing</em> published model</td><td>≥ 100 events, or ≥ 200 patients, for a stable calibration slope (Riley/Collins)</td><td><span class="pill maybe">Marginal</span> at ~40% predicted mortality, expect ~31 deaths. Reportable with wide CIs, best framed as a pilot or a brief report</td></tr>
+        <tr><td>Calibration plot + Hosmer–Lemeshow + O/E ratio</td><td>Same</td><td><span class="pill maybe">Yes, with wide CIs</span></td></tr>
+        <tr><td><strong>Developing</strong> a new mortality model</td><td>EPV ≥ 10 → ≥ 470 patients for 47 predictors</td><td><span class="pill no">No</span> EPV = 0.7</td></tr>
+        <tr><td>Testing whether lactate/base deficit add to APACHE IV</td><td>~10 events per added predictor plus the base model offset; ≥ 150–200 patients</td><td><span class="pill no">No</span> — but becomes feasible at ~250 patients, i.e. ~8 more months of the same collection</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note flag">
+    <p class="note-l">Recommendation</p>
+    <p>Retrieve the outcomes regardless — they are cheap and the cohort is otherwise 100% complete. Then
+    publish the APACHE work <strong>separately</strong>, as a short external-validation report, and continue
+    collecting to ~250 patients before attempting the lactate/base-deficit question that the four
+    non-standard columns suggest was the original intent.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 8 ══ -->
+<section id="s8">
+  <div class="sec-head"><span class="sec-n">08</span><h2>Bias inventory</h2></div>
+
+  <div class="tw">
+    <table class="bias">
+      <thead><tr><th>Bias</th><th>How it enters here</th><th>Mitigation</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Selection</strong></td><td>Only 62 collection days across 9 months; 63% of records from April 2025. These are not consecutive ED attendances — they are the encounters someone chose to record</td><td>State explicitly that the sampling frame is “encounters entered into the register”, not “ED attendances”. Report records per day and per clinician. Do not describe the cohort as consecutive</td></tr>
+        <tr><td><strong>Spectrum</strong></td><td>45% high-acuity is far above a typical ED, suggesting preferential recording of sicker patients</td><td>Compare the acuity distribution with published ESI distributions in the Discussion; frame all performance as applying to this case-mix. Report PPV/NPV explicitly as prevalence-dependent</td></tr>
+        <tr><td><strong>Temporal confounding</strong></td><td>Any era comparison confounds instrument with staffing, season and policy</td><td>Resolved by abandoning the before/after design (§1). Within the 2024 cohort, adjust for calendar month and include the temporal holdout</td></tr>
+        <tr><td><strong>Measurement</strong></td><td>Temperature recorded in a Fahrenheit-labelled field with 22 Celsius values; BP as free text with malformed entries; impossible values (SBP 700, RR 0, SpO₂ 0)</td><td>Pre-specified plausibility ranges applied identically to both cohorts, set to missing not deleted. Publish the cleaning rules as a supplement. Sensitivity analysis with the unfiltered data</td></tr>
+        <tr><td><strong>Rater / clustering</strong></td><td>Five clinicians produce 35% of records; ICC 0.113; DEFF 4.53</td><td>This is the exposure of interest, not a nuisance — but it must still be modelled. Random intercepts throughout; clinician-grouped CV; cluster bootstrap CIs; effective sample size reported alongside n</td></tr>
+        <tr><td><strong>Label</strong></td><td>ESI is a subjective judgement with no ground truth; the model is trained on it</td><td>Never call it accuracy — call it agreement with clinician assignment. State in the Abstract that no patient outcome was available. Frame the deliverable as consistency audit</td></tr>
+        <tr><td><strong>Missing-data</strong></td><td>Intervention-field completion falls 33% → 0% over the study period; GCS 95.3%</td><td>Those fields are excluded as leakage anyway. For retained predictors use MICE with month included, and report a missingness-by-month figure so the drift is visible rather than hidden</td></tr>
+        <tr><td><strong>Documentation change</strong></td><td>The instrument changed between cohorts</td><td>Cohorts analysed separately and never pooled; the replication claim is structural, not quantitative (§4)</td></tr>
+        <tr><td><strong>Class imbalance</strong></td><td>45/55 for the primary target — mild. Severe for ESI 5 (1.2%)</td><td>No resampling needed for the binary target; report AUPRC alongside AUROC. Abandon the 5-class analysis; the ordinal model is the sensitivity analysis instead</td></tr>
+        <tr><td><strong>Data leakage</strong></td><td><code>Area Triaged</code> (+0.121 AUROC), intervention fields, disposition, shock index vs its components</td><td>Pre-specified exclusion list in the protocol; the leaky model reported as an explicit negative control so readers can see the size of the effect</td></tr>
+        <tr><td><strong>Identifiability</strong></td><td>Names, phone numbers, registration numbers and staff emails in the source files</td><td>Analyse only the de-identified exports; salted-hash clinician IDs; ethics approval covering secondary analysis obtained before submission</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 9 ══ -->
+<section id="s9">
+  <div class="sec-head"><span class="sec-n">09</span><h2>Paper architecture</h2></div>
+
+  <div class="spec">
+    <div class="spec-row"><span class="spec-k">Working title</span><div class="spec-v">
+      <p><strong>“Whose judgement is it? Between-clinician variation in emergency triage acuity assignment
+      and the limits of physiology-based reference models”</strong></p>
+      <p style="color:var(--ink-3);font-size:14.5px">Alternative, more conventional: <em>“Clinician-level
+      variation in Emergency Severity Index assignment: a retrospective analysis of 2,436 triage encounters
+      across two instruments”</em></p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Target venues</span><div class="spec-v"><ul>
+      <li><em>BMC Emergency Medicine</em>, <em>International Journal of Emergency Medicine</em> — realistic primary targets</li>
+      <li><em>Annals of Emergency Medicine</em>, <em>Academic Emergency Medicine</em> — reach, would require the outcome data the study lacks</li>
+      <li>AMIA Annual Symposium / MedInfo — if the consistency-audit framing is foregrounded</li>
+      <li><em>Journal of Clinical Nursing</em> / <em>JEN</em> — strong fit if the clinician-variation framing leads</li>
+    </ul></div></div>
+
+    <div class="spec-row"><span class="spec-k">Abstract</span><div class="spec-v"><p>Structured, 250–300 words:
+      Background · Methods (single-centre retrospective, two cohorts, random-intercept models, grouped CV) ·
+      Results (MOR with CI, ICC both cohorts, AUROC with CI, and the 90%-sensitivity specificity of 0.21) ·
+      Conclusions (clinician identity is a major determinant of recorded acuity; physiology-based models are
+      suited to consistency audit, not triage decision support). <strong>The Methods sentence must contain
+      “no patient outcome data were available”.</strong></p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Introduction</span><div class="spec-v"><p>ESI is the dominant
+      triage instrument worldwide; its reliability literature is largely κ studies on vignettes or small
+      paired-rater samples. Real-world registers rarely permit clinician-level variance decomposition
+      because clinician identity is not retained. Triage-ML papers proliferate and almost universally report
+      discrimination against clinician labels while implying clinical validity.</p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Research gap</span><div class="spec-v"><p>Two gaps, stated
+      plainly. <strong>(1)</strong> Between-clinician variation in routine practice has rarely been
+      quantified with multilevel models on operational data with clinician identifiers retained — vignette
+      κ studies measure something different. <strong>(2)</strong> The triage-prediction literature treats
+      clinician variability as noise to be cross-validated away rather than as the quantity of interest;
+      reframing the model as a consistency reference is the contribution.</p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Methods</span><div class="spec-v"><p>STROBE + TRIPOD+AI order:
+      design and setting · participants and eligibility · variables and definitions incl. the leakage
+      exclusion list · data sources and cleaning rules · bias · study size and EPV · quantitative variables
+      · statistical methods (multilevel primary, prediction secondary, replication) · missing data · ethics.</p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Results</span><div class="spec-v"><ol>
+      <li>Cohort flow and characteristics</li>
+      <li>Acuity distribution and its variation across clinicians <em>(primary)</em></li>
+      <li>Variance decomposition: τ², ICC, MOR, unadjusted and adjusted, both estimators</li>
+      <li>Case-mix-adjusted O/E funnel plot</li>
+      <li>Prediction model: discrimination, calibration, operating characteristics</li>
+      <li>Per-clinician model performance heterogeneity</li>
+      <li>Replication in the 2023 cohort</li>
+      <li>Sensitivity analyses incl. the leakage negative control</li>
+    </ol></div></div>
+
+    <div class="spec-row"><span class="spec-k">Discussion</span><div class="spec-v"><ul>
+      <li>An MOR of ~2 means two clinicians assessing identical patients differ roughly two-fold in the odds of a high-acuity designation</li>
+      <li>Replication under a different instrument argues the effect is about clinicians, not about ESI's design</li>
+      <li>Physiology reaches AUROC ~0.73 against clinician labels — a ceiling that reflects genuine judgement content, not model inadequacy</li>
+      <li>Specificity of 0.21 at 90% sensitivity is the concrete reason this cannot be decision support</li>
+      <li>Implication: audit and calibration feedback for triage teams; the O/E funnel plot is directly deployable for that</li>
+      <li>Contrast with vignette-based κ studies, which remove case-mix variation by construction</li>
+    </ul></div></div>
+
+    <div class="spec-row"><span class="spec-k">Limitations</span><div class="spec-v"><p>Single centre; non-consecutive
+      sampling; no patient outcomes; no clinician experience or role variables — the most plausible
+      explanation for the variation and untestable here; ESI recorded post hoc in a research register rather
+      than the live clinical system; effective sample size 248 not 1,125; 33 clusters is at the lower bound
+      for stable variance estimation; free-text complaint not used in the primary model; the two estimators
+      of τ² disagree.</p></div></div>
+
+    <div class="spec-row"><span class="spec-k">Conclusion</span><div class="spec-v"><p>Recorded triage acuity
+      reflects both patient physiology and the clinician performing the assessment, to a degree that is
+      clinically non-trivial and reproducible across instruments. Physiology-based models should be
+      positioned as consistency-audit tools for triage quality improvement, and evaluated against patient
+      outcomes before any clinical role is considered.</p></div></div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 10 ══ -->
+<section id="s10">
+  <div class="sec-head"><span class="sec-n">10</span><h2>Figures and tables</h2></div>
+
+  <h4>Figures</h4>
+  <div class="tw">
+    <table>
+      <thead><tr><th class="num">#</th><th>Figure</th><th>Justification</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td>Cohort flow diagram (both cohorts, STROBE style)</td><td>Required; documents the 2023 sheet union and every exclusion</td></tr>
+        <tr><td class="num">2</td><td><strong>Caterpillar plot: case-mix-adjusted high-acuity rate per clinician</strong>, with bootstrap CIs, ordered by estimate</td><td><strong>The paper's central figure.</strong> Shows the 5–80% observed spread and which clinicians sit outside the funnel</td></tr>
+        <tr><td class="num">3</td><td>Funnel plot of O/E ratio against clinician volume, with exact binomial limits</td><td>The quality-improvement-facing form of Figure 2; robust to model specification</td></tr>
+        <tr><td class="num">4</td><td>Forest plot: τ², ICC and MOR — unadjusted vs adjusted, both cohorts, both estimators</td><td>Delivers the primary result and its robustness in one object</td></tr>
+        <tr><td class="num">5</td><td>ROC and precision-recall curves, grouped CV and temporal holdout, with CI bands</td><td>Standard TRIPOD reporting; PR curve matters at 45% prevalence</td></tr>
+        <tr><td class="num">6</td><td>Flexible calibration curve with histogram of predicted risks</td><td>Calibration is where triage models usually fail and is routinely omitted</td></tr>
+        <tr><td class="num">7</td><td>Adjusted odds ratios (forest) + permutation importance side by side</td><td>Interpretable effects and model-agnostic ranking together; replaces a SHAP plot</td></tr>
+        <tr><td class="num">8</td><td>Per-clinician AUROC caterpillar plot</td><td>Hypothesis H3 — the 0.474–0.896 spread</td></tr>
+        <tr><td class="num">9</td><td>Decision-curve analysis</td><td>Shows net benefit is thin, supporting the audit-not-triage conclusion</td></tr>
+        <tr class="mono" style="color:var(--ink-3)"><td class="num">S1</td><td>Missingness by calendar month, both cohorts</td><td>Supplement — makes documentation drift visible</td></tr>
+        <tr class="mono" style="color:var(--ink-3)"><td class="num">S2</td><td>Physiology distributions by acuity, both cohorts</td><td>Supplement — supports the §4 harmonisation ruling</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>Deliberately excluded:</strong> a before/after bar chart of documentation completeness (the
+  comparison is null and the figure would imply a claim); any SHAP beeswarm unless the boosted model is
+  final; a correlation heatmap of all variables (decorative).</p>
+
+  <h4>Tables</h4>
+  <div class="tw">
+    <table>
+      <thead><tr><th class="num">#</th><th>Table</th><th>Contents</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td>Cohort characteristics</td><td>Both cohorts side by side; median (IQR) / n (%); SMDs instead of p-values; acuity distribution</td></tr>
+        <tr><td class="num">2</td><td>Variable definitions and completeness</td><td>Every variable, definition, units, % complete per cohort, and harmonisability — §4 in publishable form</td></tr>
+        <tr><td class="num">3</td><td>Clinician characteristics</td><td>n clinicians, encounters per clinician (median, IQR, range), % of records from top 5, encounters in both eras, high-acuity rate range</td></tr>
+        <tr><td class="num">4</td><td><strong>Variance decomposition</strong></td><td>τ², ICC, MOR with 95% CI; null and adjusted; both cohorts; both estimators; design effect and effective n</td></tr>
+        <tr><td class="num">5</td><td>Model performance</td><td>AUROC, AUPRC, Brier, calibration intercept and slope, and sens/spec/PPV/NPV at the 90%-sensitivity point, for every model × validation scheme</td></tr>
+        <tr><td class="num">6</td><td>Adjusted odds ratios</td><td>All 16 predictors from the primary logistic model, with CIs</td></tr>
+        <tr><td class="num">7</td><td>Sensitivity analyses</td><td>≥ 10 vs ≥ 20 encounter thresholds; complete-case vs MICE; unfiltered vs plausibility-filtered; ordinal model; leakage negative control; with/without complaint features</td></tr>
+        <tr class="mono" style="color:var(--ink-3)"><td class="num">S1</td><td>Abbreviation lexicon</td><td>Supplement — every expansion, with adjudicator agreement</td></tr>
+        <tr class="mono" style="color:var(--ink-3)"><td class="num">S2</td><td>Data-cleaning rules</td><td>Supplement — plausibility ranges, parsing rules, exclusion counts</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 11 ══ -->
+<section id="s11">
+  <div class="sec-head"><span class="sec-n">11</span><h2>Publication risk assessment</h2></div>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Reviewer objection</th><th>Risk</th><th>Pre-emptive response</th></tr></thead>
+      <tbody>
+        <tr><td><strong>“You have no outcomes — you're predicting a nurse's opinion.”</strong></td><td><span class="pill no">Near-certain</span></td><td>Concede it in the title framing, the Abstract Methods, and the Conclusion. The study is <em>about</em> the opinion; that is the point. This objection is fatal only if the paper pretends otherwise</td></tr>
+        <tr><td>“Single centre, non-consecutive sampling — is this a real ED population?”</td><td><span class="pill no">Near-certain</span></td><td>Report the sampling frame honestly, compare the acuity distribution with published ESI distributions, and confine all claims to this case-mix. Do not use the word “consecutive”</td></tr>
+        <tr><td>“33 clinicians is too few for a variance component.”</td><td><span class="pill maybe">Likely</span></td><td>Cluster bootstrap CIs rather than asymptotic SEs; report both estimators and their disagreement; present the model-free O/E funnel as corroboration</td></tr>
+        <tr><td>“AUROC 0.73 is not competitive with published triage models.”</td><td><span class="pill maybe">Likely</span></td><td>Those models are usually trained with post-triage variables or predict admission (a real outcome). Include the <code>Area Triaged</code> negative control to show precisely how a 0.85 gets manufactured</td></tr>
+        <tr><td>“Why not a before/after evaluation of the form redesign?”</td><td><span class="pill maybe">Likely</span></td><td>Report the three null results with CIs in the supplement. Pre-empting this converts a weakness into evidence of rigour</td></tr>
+        <tr><td>“Variance explained by physiology is negative — error?”</td><td><span class="pill maybe">Possible</span></td><td>Non-collapsibility of the odds ratio; cite Greenland. Report τ² for both models and never frame the difference as variance explained</td></tr>
+        <tr><td>“Was ethics approval obtained for secondary analysis?”</td><td><span class="pill no">Certain</span></td><td><strong>Must be resolved before submission.</strong> Identifiable data were collected; secondary-use approval and a data-sharing statement are prerequisites, not paperwork</td></tr>
+        <tr><td>“Clinician experience/role is the obvious confounder and you didn't measure it.”</td><td><span class="pill maybe">Likely</span></td><td>Concede as the principal limitation. If the department can supply role and years of experience retrospectively, <strong>get it</strong> — it would materially strengthen the paper</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>What would substantially strengthen the study</h4>
+  <ol>
+    <li><strong>Clinician role and years of experience</strong> — likely retrievable from staff records, and turns a variance component into an explanatory model. Highest value per unit effort.</li>
+    <li><strong>Any patient outcome for the triage cohorts</strong> — even ED disposition (admitted / discharged / died) would let you ask whether high-variance clinicians over- or under-triage relative to what happened. This is the difference between a solid specialty-journal paper and a strong one.</li>
+    <li><strong>A paired-rater substudy</strong> — 100 encounters independently triaged by two clinicians would yield a direct κ and anchor the variance component against the established reliability literature. Prospective, cheap, ~2 weeks.</li>
+    <li><strong>A second site</strong> — converts single-centre into multicentre and raises the venue ceiling considerably.</li>
+  </ol>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 12 ══ -->
+<section id="s12">
+  <div class="sec-head"><span class="sec-n">12</span><h2>Ratings</h2></div>
+
+  <div class="rate">
+    <div class="rate-row"><span class="rate-n">Novelty</span><span class="bar b-warn"><i style="width:60%"></i></span><span class="rate-v">3.0</span></div>
+    <div class="rate-row"><span class="rate-n">Feasibility</span><span class="bar"><i style="width:90%"></i></span><span class="rate-v">4.5</span></div>
+    <div class="rate-row"><span class="rate-n">Clinical relevance</span><span class="bar"><i style="width:80%"></i></span><span class="rate-v">4.0</span></div>
+    <div class="rate-row"><span class="rate-n">Methodological rigour <span style="color:var(--ink-3);font-size:13px">(as designed here)</span></span><span class="bar"><i style="width:88%"></i></span><span class="rate-v">4.4</span></div>
+    <div class="rate-row"><span class="rate-n">ML contribution</span><span class="bar b-bad"><i style="width:44%"></i></span><span class="rate-v">2.2</span></div>
+    <div class="rate-row"><span class="rate-n">Publication potential <span style="color:var(--ink-3);font-size:13px">(specialty journal)</span></span><span class="bar b-warn"><i style="width:70%"></i></span><span class="rate-v">3.5</span></div>
+    <div class="rate-row tot"><span class="rate-n">Overall</span><span class="bar"><i style="width:76%"></i></span><span class="rate-v">3.6</span></div>
+  </div>
+
+  <p><strong>Read this honestly.</strong> This is a solid single-centre specialty-journal paper, not a
+  high-impact one. Its ML contribution is deliberately modest — the methods are standard, and the
+  contribution is the framing and the rigour, not the algorithm. Novelty is moderate: triage reliability is
+  a studied field, and the increment is doing it with multilevel models on operational data with clinician
+  identity retained, plus replication across instruments.</p>
+
+  <p>The ratings that would move most with the additions in §11: adding clinician experience takes novelty
+  to ~3.5; adding any patient outcome takes clinical relevance to 5.0 and publication potential to ~4.5;
+  a second site pushes overall past 4.</p>
+
+  <div class="note">
+    <p class="note-l">The direct answer to “is this enough for a paper?”</p>
+    <p><strong>Yes — one paper, at a specialty journal, if it is written as a clinician-variation study
+    with a prediction component.</strong> No, if it is written as a triage-prediction paper: at AUROC 0.73
+    against a subjective label with no outcomes, that manuscript is indistinguishable from dozens of
+    weaker ones and would deserve rejection. The data are sufficient for the honest version of the study
+    and insufficient for the ambitious one, and the gap between those is entirely a matter of framing.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 13 ══ -->
+<section id="s13">
+  <div class="sec-head"><span class="sec-n">13</span><h2>Execution plan</h2></div>
+
+  <ol class="phases">
+    <li>
+      <p class="ph-t">Governance and pre-registration <span class="ph-w">week 1 · blocking</span></p>
+      <ul>
+        <li>Obtain ethics approval for secondary analysis; draft the data-sharing statement</li>
+        <li>Submit the outcome request for the 78 APACHE patients (§7) — long lead time, start now even though it belongs to the separate paper</li>
+        <li>Request clinician role and years of experience</li>
+        <li><strong>Pre-register the analysis plan</strong> (OSF or similar) before touching the outcome. This is what makes the pre-specified thresholds credible rather than post hoc</li>
+      </ul>
+    </li>
+    <li>
+      <p class="ph-t">Data preparation <span class="ph-w">week 2</span></p>
+      <ul>
+        <li>Start from <code>csv/era2024_analysis.csv</code> and <code>csv/era2023_analysis.csv</code>; never from the source workbooks</li>
+        <li>Freeze the cleaning rules as code with the plausibility ranges from §3; emit an exclusion log that feeds Figure 1</li>
+        <li>Salted-hash clinician IDs; verify no free-text field carries a name</li>
+        <li>Lock the analysis dataset with a checksum and version it</li>
+      </ul>
+    </li>
+    <li>
+      <p class="ph-t">Exploratory analysis <span class="ph-w">week 3</span></p>
+      <ul>
+        <li>Table 1, Table 2, Table 3; missingness by month; distributions by acuity</li>
+        <li>Per-clinician volumes and raw acuity rates — Figure 2 in draft form</li>
+        <li>No modelling on the primary outcome yet</li>
+      </ul>
+    </li>
+    <li>
+      <p class="ph-t">Primary statistical analysis <span class="ph-w">weeks 4–5</span></p>
+      <ul>
+        <li>Random-intercept logistic models, null and adjusted; τ², ICC, MOR</li>
+        <li>Cluster bootstrap (2,000 resamples of clinicians) for all CIs</li>
+        <li>Both estimators; design effect and effective n</li>
+        <li>Ordinal proportional-odds sensitivity model</li>
+        <li>Replication on the 2023 cohort using identical code</li>
+      </ul>
+    </li>
+    <li>
+      <p class="ph-t">Prediction experiments <span class="ph-w">weeks 6–7</span></p>
+      <ul>
+        <li>Logistic (splines) and gradient boosting under clinician-grouped 5-fold CV</li>
+        <li>Temporal holdout at 18 Apr 2025; optimism correction by bootstrap</li>
+        <li>Full metric set with CIs; calibration; decision curve</li>
+        <li>Negative control with <code>Area Triaged</code>; rater-only reference model</li>
+        <li>Per-clinician AUROC with bootstrap CIs</li>
+        <li>Four pre-specified subgroup interactions — and no more</li>
+      </ul>
+    </li>
+    <li>
+      <p class="ph-t">Complaint-text substudy <span class="ph-w">weeks 6–9, parallel</span></p>
+      <ul>
+        <li>Build and adjudicate the abbreviation lexicon; two blinded clinicians; report κ</li>
+        <li>Chapter mapping fitted inside training folds only</li>
+        <li>Paired bootstrap ΔAUROC against the pre-set 0.02 threshold; report whatever it shows</li>
+      </ul>
+    </li>
+    <li>
+      <p class="ph-t">Validation and robustness <span class="ph-w">week 10</span></p>
+      <ul>
+        <li>Every sensitivity analysis in Table 7</li>
+        <li>Re-run the entire pipeline end to end from the locked dataset on a clean machine</li>
+        <li>Independent code review of the leakage-exclusion list — the single highest-consequence line of code in the project</li>
+      </ul>
+    </li>
+    <li>
+      <p class="ph-t">Figures and tables <span class="ph-w">week 11</span></p>
+      <ul>
+        <li>Nine main figures, two supplementary; publication-quality vector output</li>
+        <li>Seven main tables, two supplementary</li>
+        <li>Colour-blind-safe palettes; every figure legible in greyscale</li>
+      </ul>
+    </li>
+    <li>
+      <p class="ph-t">Manuscript <span class="ph-w">weeks 12–14</span></p>
+      <ul>
+        <li>Draft against the STROBE and TRIPOD+AI checklists, both submitted as supplements</li>
+        <li>Write Limitations before Discussion — it disciplines the claims</li>
+        <li>Internal review by a clinician not involved in the analysis</li>
+        <li>Deposit analysis code publicly; state the data-availability position explicitly</li>
+      </ul>
+    </li>
+  </ol>
+
+  <div class="note">
+    <p class="note-l">One rule for the whole project</p>
+    <p>The primary analysis is pre-specified in Phase 1 and executed in Phase 4. If the MOR comes back at
+    1.2 with a CI spanning 1, <strong>publish that</strong> — “triage acuity assignment was consistent
+    across clinicians in this department” is a perfectly good result and the design is what makes it
+    credible. The failure mode to guard against is discovering that the primary is null and quietly
+    promoting a subgroup finding to headline.</p>
+  </div>
+
+  <p class="colophon">
+    <b>Evidence base</b> — scripts <code>16_design.py</code>, <code>17_design2.py</code>, <code>18_mor.py</code>
+    in <code>analysis_output/</code>; analysis datasets <code>csv/era2023_analysis.csv</code>,
+    <code>csv/era2024_analysis.csv</code><br>
+    <b>Every number in this protocol</b> was computed from the de-identified data, not estimated<br>
+    <b>Source workbooks</b> — unmodified; read-only throughout<br>
+    <b>Design date</b> — 20 August 2026
+  </p>
+</section>
+
+</main>
+</div>
+</div>

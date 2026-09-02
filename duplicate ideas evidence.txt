@@ -1,0 +1,30 @@
+duplicate ideas 
+evidence patient ID 
+starnardization 
+what the good way to do it 
+tailor made excatly 
+deploy it on flutter 
+NIMS is a teaching teaching hospital for MD 
+professor ashima sharma 
+emergency , othropedics lots of depraents 
+whats happening while they are there 
+
+scores what they want to run in the dexp data collection ap regime 
+
+flexiblity on the protocol they are following 
+
+multiparamater monitoring system , systolic bp disatolic bp 
+
+photo of bar code hand 
+photo taking of 
+
+
+* RFID based tracker on the patients * tag on the hand prox sensor locks patient moving across it 
+
+photos arent blurry , pretty ad inputs , filters checking , 
+
+basic login id with flutter app 
+
+figure out regulatory DPDP store and retrieve it safely 
+
+

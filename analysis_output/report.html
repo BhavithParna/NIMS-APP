@@ -1,0 +1,1279 @@
+<title>Three Workbooks, One Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ─── tokens: light ─────────────────────────────────────────────── */
+:root{
+  --ground:#eef1f1;
+  --surface:#fbfcfc;
+  --surface-2:#f2f5f5;
+  --rule:#d2dbdb;
+  --rule-soft:#e2e8e8;
+  --ink:#0f1719;
+  --ink-2:#3b4a4d;
+  --ink-3:#68787b;
+  --accent:#0b6068;
+  --accent-soft:#e0eced;
+  --accent-ink:#08484e;
+  --ok:#2c6440;
+  --ok-soft:#e2eee6;
+  --warn:#8c5200;
+  --warn-soft:#f4ebdd;
+  --bad:#96322a;
+  --bad-soft:#f4e4e2;
+  --shadow:0 1px 2px rgba(15,23,25,.05),0 8px 24px -16px rgba(15,23,25,.22);
+  --measure:68ch;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0c1214;
+    --surface:#141c1e;
+    --surface-2:#1a2427;
+    --rule:#2c393c;
+    --rule-soft:#212c2f;
+    --ink:#e6ecec;
+    --ink-2:#b3c1c2;
+    --ink-3:#8b9b9d;
+    --accent:#57b3bb;
+    --accent-soft:#16333a;
+    --accent-ink:#8ad2d8;
+    --ok:#77b98c;
+    --ok-soft:#1a2f22;
+    --warn:#d3a15c;
+    --warn-soft:#33260f;
+    --bad:#e0857b;
+    --bad-soft:#361d1a;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0c1214;
+  --surface:#141c1e;
+  --surface-2:#1a2427;
+  --rule:#2c393c;
+  --rule-soft:#212c2f;
+  --ink:#e6ecec;
+  --ink-2:#b3c1c2;
+  --ink-3:#8b9b9d;
+  --accent:#57b3bb;
+  --accent-soft:#16333a;
+  --accent-ink:#8ad2d8;
+  --ok:#77b98c;
+  --ok-soft:#1a2f22;
+  --warn:#d3a15c;
+  --warn-soft:#33260f;
+  --bad:#e0857b;
+  --bad-soft:#361d1a;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -16px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--accent-soft);color:var(--accent-ink)}
+
+/* ─── shell ─────────────────────────────────────────────────────── */
+.shell{max-width:1200px;margin:0 auto;padding:0 24px 96px}
+.cols{display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:1040px){
+  .cols{grid-template-columns:212px minmax(0,1fr);gap:56px;align-items:start}
+}
+
+/* ─── masthead ──────────────────────────────────────────────────── */
+.mast{padding:64px 0 36px;border-bottom:2px solid var(--ink)}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:11.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 22px;
+  display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;
+}
+.eyebrow span{color:var(--ink-3)}
+h1{
+  font-family:Spectral,Georgia,serif;
+  font-weight:700;font-size:clamp(2.4rem,6vw,4.1rem);line-height:1.02;
+  letter-spacing:-.02em;margin:0;text-wrap:balance;max-width:16ch;
+}
+.deck{
+  font-family:Spectral,Georgia,serif;font-size:clamp(1.05rem,2.2vw,1.32rem);
+  line-height:1.5;color:var(--ink-2);max-width:56ch;margin:22px 0 0;text-wrap:pretty;
+}
+.deck strong{color:var(--ink);font-weight:600}
+
+/* ─── file manifest ─────────────────────────────────────────────── */
+.manifest{
+  margin:36px 0 0;display:grid;gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:3px;overflow:hidden;
+}
+.manifest-row{
+  background:var(--surface);padding:13px 16px;
+  display:grid;grid-template-columns:1fr auto;gap:4px 20px;align-items:baseline;
+}
+.manifest-row:first-child{background:var(--surface-2)}
+.mf-name{font-family:"IBM Plex Mono",monospace;font-size:13.5px;font-weight:500}
+.mf-meta{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;
+}
+.mf-head{
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:600;
+}
+
+/* ─── phi banner ────────────────────────────────────────────────── */
+.phi{
+  margin:28px 0 0;padding:16px 20px;background:var(--bad-soft);
+  border-left:3px solid var(--bad);border-radius:0 3px 3px 0;
+}
+.phi-label{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--bad);margin:0 0 6px;
+}
+.phi p{margin:0;font-size:15.5px;line-height:1.55;color:var(--ink-2);max-width:70ch}
+
+/* ─── toc ───────────────────────────────────────────────────────── */
+.toc{padding:40px 0 0}
+@media(min-width:1040px){
+  .toc{position:sticky;top:0;max-height:100vh;overflow-y:auto;padding:56px 0 40px}
+}
+.toc-h{
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);
+  margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--rule);
+}
+.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.toc a{
+  display:grid;grid-template-columns:26px 1fr;gap:6px;
+  padding:4px 0;text-decoration:none;color:var(--ink-2);
+  font-size:14px;line-height:1.35;border-radius:2px;
+}
+.toc a:hover{color:var(--accent)}
+.toc a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.toc-n{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;padding-top:2px;
+}
+
+/* ─── sections ──────────────────────────────────────────────────── */
+main{padding-top:8px}
+section{padding:52px 0 0;scroll-margin-top:16px}
+.sec-head{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;margin:0 0 8px}
+.sec-n{
+  font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+  color:var(--accent);letter-spacing:.06em;padding-top:.35em;
+}
+h2{
+  font-family:Spectral,Georgia,serif;font-weight:600;
+  font-size:clamp(1.7rem,3.6vw,2.35rem);line-height:1.12;letter-spacing:-.015em;
+  margin:0;text-wrap:balance;
+}
+h3{
+  font-family:Spectral,Georgia,serif;font-weight:600;font-size:1.28rem;
+  line-height:1.25;margin:38px 0 10px;text-wrap:balance;
+}
+h4{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
+  margin:30px 0 10px;
+}
+p{margin:0 0 15px;max-width:var(--measure);text-wrap:pretty}
+li{max-width:var(--measure)}
+a{color:var(--accent);text-underline-offset:2px}
+strong{font-weight:600}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.87em}
+code{
+  background:var(--surface-2);padding:.1em .34em;border-radius:2px;
+  border:1px solid var(--rule-soft);
+}
+ul,ol{margin:0 0 16px;padding-left:1.25em}
+ul li,ol li{margin-bottom:7px}
+ul li::marker{color:var(--accent)}
+hr.rule{border:0;border-top:1px solid var(--rule);margin:44px 0 0}
+
+/* ─── tables ────────────────────────────────────────────────────── */
+.tw{overflow-x:auto;margin:0 0 20px;border:1px solid var(--rule);border-radius:3px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;line-height:1.45}
+th,td{padding:9px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule-soft)}
+thead th{
+  background:var(--surface-2);position:sticky;top:0;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  border-bottom:1px solid var(--rule);white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:"IBM Plex Mono",monospace;font-size:13px}
+td.mono{font-family:"IBM Plex Mono",monospace;font-size:12.5px}
+tbody tr:hover{background:var(--surface-2)}
+caption{
+  caption-side:bottom;text-align:left;padding:9px 13px;font-size:13px;
+  color:var(--ink-3);border-top:1px solid var(--rule-soft);
+}
+
+/* ─── verdict pills ─────────────────────────────────────────────── */
+.pill{
+  display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;
+  padding:2px 7px;border-radius:2px;border:1px solid;
+}
+.pill.yes{color:var(--ok);background:var(--ok-soft);border-color:var(--ok)}
+.pill.maybe{color:var(--warn);background:var(--warn-soft);border-color:var(--warn)}
+.pill.no{color:var(--bad);background:var(--bad-soft);border-color:var(--bad)}
+
+/* ─── callouts ──────────────────────────────────────────────────── */
+.note{
+  margin:0 0 22px;padding:15px 18px;background:var(--surface);
+  border:1px solid var(--rule);border-left:3px solid var(--accent);
+  border-radius:0 3px 3px 0;box-shadow:var(--shadow);
+}
+.note.alert{border-left-color:var(--bad)}
+.note.flag{border-left-color:var(--warn)}
+.note-l{
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 7px;
+}
+.note.alert .note-l{color:var(--bad)}
+.note.flag .note-l{color:var(--warn)}
+.note p:last-child{margin-bottom:0}
+
+/* ─── key-finding list ──────────────────────────────────────────── */
+.findings{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-direction:column;gap:0}
+.findings li{
+  display:grid;grid-template-columns:34px 1fr;gap:16px;
+  padding:16px 0;border-top:1px solid var(--rule);max-width:none;margin:0;
+}
+.findings li:last-child{border-bottom:1px solid var(--rule)}
+.f-n{
+  font-family:"IBM Plex Mono",monospace;font-size:20px;font-weight:600;
+  color:var(--accent);line-height:1.1;font-variant-numeric:tabular-nums;
+}
+.findings p{margin:0;max-width:64ch}
+
+/* ─── score bars ────────────────────────────────────────────────── */
+.bar{
+  position:relative;height:7px;background:var(--surface-2);
+  border:1px solid var(--rule-soft);border-radius:1px;min-width:78px;
+}
+.bar i{
+  position:absolute;inset:0 auto 0 0;background:var(--accent);
+  border-radius:1px;display:block;
+}
+.bar.b-warn i{background:var(--warn)}
+.bar.b-bad i{background:var(--bad)}
+.scorecell{display:flex;align-items:center;gap:9px;justify-content:flex-end}
+.scorecell b{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;min-width:3.6ch;text-align:right}
+
+/* ─── lineage diagram ───────────────────────────────────────────── */
+.lineage{
+  margin:6px 0 24px;padding:26px 22px;background:var(--surface);
+  border:1px solid var(--rule);border-radius:3px;box-shadow:var(--shadow);
+}
+.lin-top{
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
+  padding-bottom:12px;border-bottom:1px solid var(--rule);margin-bottom:20px;
+}
+.lin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+.lin-card{
+  padding:14px 15px;background:var(--surface-2);border:1px solid var(--rule-soft);
+  border-top:3px solid var(--accent);border-radius:0 0 3px 3px;
+}
+.lin-card.icu{border-top-color:var(--warn)}
+.lin-card h5{
+  margin:0 0 3px;font-family:"IBM Plex Mono",monospace;font-size:12px;
+  font-weight:600;letter-spacing:.03em;
+}
+.lin-card .lin-sub{font-size:13px;color:var(--ink-3);margin:0 0 10px;line-height:1.35}
+.lin-card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:12.5px}
+.lin-card dt{color:var(--ink-3);font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+.lin-card dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums}
+.lin-foot{
+  margin-top:18px;padding-top:14px;border-top:1px solid var(--rule);
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3);text-align:center;line-height:1.9;
+}
+.lin-foot b{color:var(--bad);font-weight:600}
+
+/* ─── verdict block ─────────────────────────────────────────────── */
+.verdict{
+  margin:6px 0 0;padding:34px 32px;background:var(--surface);
+  border:1px solid var(--rule);border-top:3px solid var(--accent);
+  border-radius:0 0 3px 3px;box-shadow:var(--shadow);
+}
+.qa{border-top:1px solid var(--rule-soft);padding:22px 0 0;margin:22px 0 0}
+.qa:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.qa h3{
+  font-family:Spectral,Georgia,serif;font-style:italic;font-weight:400;
+  font-size:1.24rem;color:var(--accent);margin:0 0 9px;line-height:1.3;
+}
+.qa p{margin:0 0 11px;max-width:66ch}
+.qa p:last-child{margin-bottom:0}
+
+/* ─── epistemics ────────────────────────────────────────────────── */
+.epi{display:grid;gap:18px;margin:0 0 8px}
+@media(min-width:820px){.epi{grid-template-columns:repeat(3,1fr)}}
+.epi-col{padding:16px 18px;background:var(--surface);border:1px solid var(--rule);border-radius:3px}
+.epi-col h4{margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid var(--rule-soft)}
+.epi-col.proven h4{color:var(--ok)}
+.epi-col.inferred h4{color:var(--warn)}
+.epi-col.unknown h4{color:var(--bad)}
+.epi-col ul{margin:0;padding-left:1.1em;font-size:14.5px;line-height:1.5}
+.epi-col li{max-width:none;margin-bottom:8px}
+
+/* ─── steps ─────────────────────────────────────────────────────── */
+.steps{list-style:none;counter-reset:s;margin:0 0 20px;padding:0}
+.steps li{
+  counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:14px;
+  padding:13px 0;border-bottom:1px solid var(--rule-soft);max-width:none;margin:0;
+}
+.steps li::before{
+  content:counter(s,decimal-leading-zero);
+  font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+  color:var(--accent);padding-top:3px;font-variant-numeric:tabular-nums;
+}
+.steps p{margin:0;max-width:64ch;font-size:15.5px}
+.steps p + p{margin-top:5px;color:var(--ink-2);font-size:14.5px}
+
+/* ─── colophon ──────────────────────────────────────────────────── */
+.colophon{
+  margin:64px 0 0;padding:24px 0 0;border-top:2px solid var(--ink);
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;line-height:1.8;
+  color:var(--ink-3);letter-spacing:.02em;
+}
+.colophon b{color:var(--ink-2);font-weight:500}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="shell">
+
+<header class="mast">
+  <p class="eyebrow">Dataset forensics <span>/</span> 19 August 2026 <span>/</span> read-only pass, sources unmodified</p>
+  <h1>Three Workbooks,<br>One Service</h1>
+  <p class="deck">Three clinical spreadsheets arrived with no documentation. This is what they actually
+  contain, how they relate, and what can realistically be built from them — established from the data
+  itself, never from the filenames. The short version: <strong>same hospital, same department,
+  overlapping staff, and zero shared patients.</strong></p>
+
+  <div class="manifest">
+    <div class="manifest-row">
+      <span class="mf-head">Source workbook</span>
+      <span class="mf-head">Bytes · MD5</span>
+    </div>
+    <div class="manifest-row">
+      <span class="mf-name">APACHE 4.xlsx</span>
+      <span class="mf-meta">42,837 · d22d17e47b3fc9b5534ec4037a21d2a9</span>
+    </div>
+    <div class="manifest-row">
+      <span class="mf-name">NIMS TRIAGE 2023.xlsx</span>
+      <span class="mf-meta">189,385 · f40d51f3eb536377a5c187c028a7c813</span>
+    </div>
+    <div class="manifest-row">
+      <span class="mf-name">NIMS TRIAGE 2024 (Responses).xlsx</span>
+      <span class="mf-meta">268,079 · 28e6a7951f93f267660facfb8688cd5c</span>
+    </div>
+  </div>
+
+  <div class="phi">
+    <p class="phi-label">Handling restriction</p>
+    <p>All three files contain identifiable patient data — names, mobile numbers and hospital registration
+    numbers in plaintext, alongside staff email addresses. Every derived file in <code>analysis_output/</code>
+    is de-identified; the three originals are not. Do not email them, upload them to a cloud notebook, or
+    paste them into a language model.</p>
+  </div>
+</header>
+
+<div class="cols">
+
+<nav class="toc" aria-label="Contents">
+  <p class="toc-h">Contents</p>
+  <ol>
+    <li><a href="#s1"><span class="toc-n">01</span><span>Executive summary</span></a></li>
+    <li><a href="#s2"><span class="toc-n">02</span><span>Dataset 1 — APACHE</span></a></li>
+    <li><a href="#s3"><span class="toc-n">03</span><span>Dataset 2 — 2023 triage</span></a></li>
+    <li><a href="#s4"><span class="toc-n">04</span><span>Dataset 3 — 2024 triage</span></a></li>
+    <li><a href="#s5"><span class="toc-n">05</span><span>Cross-dataset analysis</span></a></li>
+    <li><a href="#s6"><span class="toc-n">06</span><span>Quality scorecard</span></a></li>
+    <li><a href="#s7"><span class="toc-n">07</span><span>Use-case matrix</span></a></li>
+    <li><a href="#s8"><span class="toc-n">08</span><span>ML opportunities</span></a></li>
+    <li><a href="#s9"><span class="toc-n">09</span><span>Visualisations</span></a></li>
+    <li><a href="#s10"><span class="toc-n">10</span><span>Limitations</span></a></li>
+    <li><a href="#s11"><span class="toc-n">11</span><span>Next steps</span></a></li>
+    <li><a href="#s12"><span class="toc-n">12</span><span>Plain-English verdict</span></a></li>
+    <li><a href="#sa"><span class="toc-n">—</span><span>Artefacts</span></a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ══ 1 ══ -->
+<section id="s1">
+  <div class="sec-head"><span class="sec-n">01</span><h2>Executive summary</h2></div>
+
+  <p>You have <strong>three separate clinical data collections from what is almost certainly one
+  hospital's emergency and critical-care service</strong> — not three versions of one dataset, and not
+  three unrelated datasets. They are three different points in the same patient journey, captured by
+  overlapping staff, at three different times, with zero patient overlap between them.</p>
+
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th></th><th>Dataset 1</th><th>Dataset 2</th><th>Dataset 3</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">File</th><td class="mono">APACHE 4.xlsx</td><td class="mono">NIMS TRIAGE 2023.xlsx</td><td class="mono">NIMS TRIAGE 2024.xlsx</td></tr>
+        <tr><th scope="row">What a row is</th><td>one <strong>ICU admission</strong>, scored</td><td>one <strong>ED triage encounter</strong></td><td>one <strong>ED triage encounter</strong></td></tr>
+        <tr><th scope="row">Real n</th><td class="num"><strong>78</strong></td><td class="num"><strong>1,311</strong></td><td class="num"><strong>1,125</strong></td></tr>
+        <tr><th scope="row">Period</th><td>1–31 Oct 2024</td><td>Jun 2023 – Aug 2024</td><td>Dec 2024 – Aug 2025</td></tr>
+        <tr><th scope="row">Care setting</th><td>Intensive care</td><td>Emergency triage</td><td>Emergency triage</td></tr>
+        <tr><th scope="row">Instrument</th><td>Manual sheet + APACHE IV calculator</td><td>Google Form v1 (minimal)</td><td>Google Form v2 (full ABCDE)</td></tr>
+        <tr><th scope="row">Target present</th>
+            <td><span class="pill no">none — outcome empty</span></td>
+            <td><span class="pill yes">red=1 · 38.5% pos</span></td>
+            <td><span class="pill yes">ESI 1–5</span></td></tr>
+        <tr><th scope="row">Quality score</th><td class="num">77 / 100</td><td class="num">80 / 100</td><td class="num"><strong>88 / 100</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>The five findings that matter most</h3>
+  <ol class="findings">
+    <li><span class="f-n">1</span><p><strong>The 2023 workbook is one register that was split in half by sex.</strong>
+      <code>Form Responses 1</code> holds 876 records that are all male; <code>Sheet3</code> holds 435
+      that are all female. Same days, same staff, submissions minutes apart, zero patient overlap. They
+      must be unioned to get the real dataset of <strong>1,311 encounters</strong> — anyone analysing
+      only the first sheet is silently analysing men only.</p></li>
+    <li><span class="f-n">2</span><p><strong>The three files share no patients.</strong> Registration-number
+      overlap is exactly <strong>zero</strong> in all three pairwise comparisons. They cannot be joined
+      row-to-row — only stacked, or compared as cohorts.</p></li>
+    <li><span class="f-n">3</span><p><strong>The APACHE file has no outcome.</strong> The <code>Outcome</code>
+      column is 100% empty and <code>Date of discharge or death</code> is filled for 2 of 78 rows, both
+      implausible. The mortality and length-of-stay columns are <em>calculator predictions, not
+      observations</em> — using them as targets is circular.</p></li>
+    <li><span class="f-n">4</span><p><strong><code>Area Triaged</code> leaks the answer.</strong> Adding it
+      to an ESI model lifts AUC from 0.72 to 0.86, because the area is assigned <em>with</em> the triage
+      category, not before it. Same story for the 2023 file's <code>SI</code> column, which is 99%
+      reproducible as <code>HR/SBP ≥ 0.9</code>.</p></li>
+    <li><span class="f-n">5</span><p><strong>Dataset 3 is the only genuinely ML-ready file</strong>, and even
+      there the honest ceiling from vitals alone is <strong>AUC ≈ 0.72</strong> for high-acuity
+      classification — useful for research, not for deployment.</p></li>
+  </ol>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 2 ══ -->
+<section id="s2">
+  <div class="sec-head"><span class="sec-n">02</span><h2>Dataset 1 — <span class="mono" style="font-size:.7em">APACHE 4.xlsx</span></h2></div>
+
+  <h3>Structure</h3>
+  <div class="tw">
+    <table>
+      <tbody>
+        <tr><th scope="row">Worksheets</th><td><code>Sheet1</code>, <code>Sheet2</code> — both visible, none hidden</td></tr>
+        <tr><th scope="row">Sheet1</th><td>81 Excel rows × 51 cols → <strong>78 real patient rows</strong>, 49 headed columns; rows 79–80 blank</td></tr>
+        <tr><th scope="row">Sheet2</th><td>79 rows × 27 cols → <strong>an exact duplicate of Sheet1 columns AA:AW</strong>, verified cell-by-cell (100.00% match across all 78 rows)</td></tr>
+        <tr><th scope="row">Formulas</th><td><strong>0</strong> — every value is hard-typed</td></tr>
+        <tr><th scope="row">Merged cells / hidden sheets</th><td>none</td></tr>
+        <tr><th scope="row">Metadata</th><td>created 2025-08-28, author “Ashima Sharma” (from <code>docProps/core.xml</code>)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note flag">
+    <p class="note-l">Delete before use</p>
+    <p><code>Sheet2</code> carries no information at all. It is a copy-paste of the right-hand block of
+    <code>Sheet1</code>, two rows short. Keeping it in a pipeline invites a spurious merge that would
+    silently duplicate 23 columns.</p>
+  </div>
+
+  <h3>What a row represents</h3>
+  <p>One patient admitted to intensive care during <strong>October 2024</strong>, scored on the
+  <strong>APACHE IV</strong> severity-of-illness system. Column A jams two fields into one cell — an
+  admission date and a serial number, e.g. <code>01-10-24&nbsp;&nbsp;&nbsp;01</code>. All 78 dates parse;
+  all fall in October 2024 across 28 distinct days — roughly 2.8 ICU admissions scored per day for one month.</p>
+
+  <p>This is a <strong>prospective severity-scoring study</strong>, not a hospital extract. The column set
+  is precisely the APACHE IV input sheet — 12 acute physiology variables, GCS, chronic-health flags,
+  admission source, pre-ICU stay — plus four variables that are <em>not</em> part of APACHE IV:
+  <code>Lactate</code>, <code>Base deficit</code>, <code>PEEP</code>, <code>Vasopressors</code>. Those four
+  additions are the tell: someone was testing whether lactate and base deficit add predictive value over
+  APACHE IV. That is a very common critical-care research question.</p>
+
+  <h3>The cohort is extreme and highly selected</h3>
+  <ul>
+    <li><strong>75 of 78 (96%)</strong> are on invasive mechanical ventilation.</li>
+    <li><strong>77 of 78</strong> have GCS-verbal recorded as <code>T</code> — tubed, verbal response unscoreable.</li>
+    <li><strong>77 of 78</strong> came from “Floor” (a ward); one from another hospital. No ED admissions.</li>
+    <li>Median APACHE IV score <strong>80.5</strong> (range 26–148 of a possible 286); median <em>predicted</em> mortality <strong>42.8%</strong>.</li>
+  </ul>
+  <p>This is not “an ICU cohort” — it is the sickest, ventilated, ward-deterioration slice of one. Any
+  statistic from it generalises to that group only.</p>
+
+  <h3>Score internals are internally consistent</h3>
+  <ul>
+    <li><code>APACHE IV SCORE</code> is stored as text <code>"110/286"</code>, <code>APS SCORE</code> as <code>"110/239"</code> — parse the numerator.</li>
+    <li><strong>APACHE IV ≥ APS in all 78 rows</strong>, as it must be (APACHE IV = APS + age points + chronic-health points).</li>
+    <li>The gap <code>APACHE IV − APS</code> correlates with age at <strong>r = 0.911</strong> — exactly the expected relationship.</li>
+    <li><code>Estimated mortality rate</code> correlates with the score at <strong>r = 0.878</strong>. It is the calculator's logistic output, <em>not</em> an observed death.</li>
+  </ul>
+
+  <h3>Data-quality defects</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Defect</th><th>Evidence</th><th>Severity</th></tr></thead>
+      <tbody>
+        <tr><td><strong>No outcome recorded</strong></td><td><code>Outcome</code> 0/78 filled; <code>Date of discharge or death</code> 2/78, both implausible (Apr &amp; Sep 2024 — before or around admission)</td><td><span class="pill no">Critical</span></td></tr>
+        <tr><td><strong>WBC units are mixed</strong></td><td>Header says <code>x1000/mm3</code>; 77 rows are 1,020–89,500 (raw cells/mm³), 1 row is 10.2 (thousands)</td><td><span class="pill no">Critical</span></td></tr>
+        <tr><td>Two mislabelled units</td><td><code>Urea(mEq/L)</code> ranges 10–438 → mg/dL; <code>Albumin(g/L)</code> ranges 1.7–5.1 → g/dL</td><td><span class="pill maybe">High</span></td></tr>
+        <tr><td>Six all-zero columns</td><td>Hepatic failure, Metastatic carcinoma, Lymphoma, Leukemia/Myeloma, Immunosuppression, AIDS — zero variance</td><td><span class="pill maybe">High</span></td></tr>
+        <tr><td><code>Vasopressors</code> is mixed-type</td><td>63 numeric <code>0</code> + 15 free-text drug strings with spelling variants (<code>" Noradrenaline"</code>, <code>"Vasopressin and Norade"</code>)</td><td><span class="pill maybe">High</span></td></tr>
+        <tr><td>Composite key column</td><td>Date and serial number packed into one cell</td><td><span class="pill maybe">Medium</span></td></tr>
+        <tr><td>Temperature is low-resolution</td><td>Only <strong>14 distinct values</strong> across 78 patients; all are exact °F→°C conversions (36.556 = 97.8 °F, 38.33 = 101 °F) — recorded in Fahrenheit to the nearest degree, then converted</td><td><span class="pill maybe">Medium</span></td></tr>
+        <tr><td><strong>Full identifiers in plaintext</strong></td><td>Name, 10-digit mobile, 15-digit registration number, all 78 rows</td><td><span class="pill no">Critical</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Cell-level completeness across the 47 substantive columns is <strong>100%</strong> — genuinely
+  impressive, and the reason this file still has value despite the missing outcome.</p>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 3 ══ -->
+<section id="s3">
+  <div class="sec-head"><span class="sec-n">03</span><h2>Dataset 2 — <span class="mono" style="font-size:.7em">NIMS TRIAGE 2023.xlsx</span></h2></div>
+
+  <h3>Four sheets, only two of them data</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Sheet</th><th class="num">Excel size</th><th>Real content</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">Form Responses 1</td><td class="num">977 × 50</td><td><strong>876 encounters, all male.</strong> Google Form response sheet</td></tr>
+        <tr><td class="mono">Sheet2</td><td class="num">38 × 22</td><td><strong>37 rows — a verified subset of Sheet3</strong> (all 37 timestamps ⊂ Sheet3). A scratch copy</td></tr>
+        <tr><td class="mono">Sheet3</td><td class="num">454 × 21</td><td><strong>435 encounters, all female. No header row</strong> — data starts at Excel row 2</td></tr>
+        <tr><td class="mono">Sheet1</td><td class="num">2168 × 1</td><td><strong>Not patient data.</strong> 1,191 disease names with NNDSS labels and ICD-10 codes — a dropdown source list</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>The sex split — the central discovery</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Test</th><th>Form Responses 1</th><th>Sheet3</th></tr></thead>
+      <tbody>
+        <tr><td><code>Sex</code> values</td><td><strong>1.0 in all 876 rows</strong></td><td><strong>0.0 in all 435 rows</strong></td></tr>
+        <tr><td>Patient overlap</td><td colspan="2">1 name pair, no age agreement → coincidence</td></tr>
+        <tr><td>Timestamp overlap</td><td colspan="2"><strong>0</strong></td></tr>
+        <tr><td>Shared calendar days</td><td colspan="2"><strong>101 of 113</strong></td></tr>
+        <tr><td>Shared staff</td><td colspan="2"><strong>25 of 26 collectors</strong></td></tr>
+        <tr><td>Same collector, same day, both sheets</td><td colspan="2"><strong>155 of 216 cells (72%)</strong></td></tr>
+        <tr><td>Median gap, consecutive cross-sheet submissions</td><td colspan="2"><strong>4 minutes</strong></td></tr>
+        <tr><td>Volume ratio</td><td colspan="2">2.01 : 1 (M:F)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>The same nurse, on the same morning, minutes apart, files a male patient into one sheet and a female
+  patient into the other. This is <strong>one triage register split by sex</strong> — almost certainly so
+  that male and female cohorts could be described separately. The 2.01:1 male:female ratio matches the
+  1.75:1 in the 2024 file, consistent with the same ED population.</p>
+
+  <div class="note alert">
+    <p class="note-l">Consequence</p>
+    <p><code>Sex</code> is a <em>constant</em> within each sheet — it cannot be used as a predictor unless
+    you union the sheets first. Trauma rate also differs materially across the split (22% male vs 11%
+    female), so analysing one sheet alone gives a biased picture of the service.</p>
+  </div>
+
+  <h3>What a row represents</h3>
+  <p>One ED triage encounter recorded on a <strong>minimal Google Form</strong>: timestamp, staff email,
+  patient name, age, sex, three presentation flags (trauma / cardiac / stroke / GI), free-text complaint,
+  four vitals (pulse, BP, SpO₂, respiratory rate), a shock-index flag, and the outcome of triage —
+  <code>red=1</code>.</p>
+
+  <p>Timestamps run <strong>June 2023 → August 2024</strong>, with four stragglers in April 2025 — so the
+  filename “2023” marks when collection <em>started</em>, not what it covers. Only <strong>113 distinct
+  days</strong> appear across a 690-day span, in two bursts (Jun–Aug 2023, then Apr–Aug 2024). This is
+  intermittent research-style sampling, not continuous capture.</p>
+
+  <h3>Columns worth flagging</h3>
+  <ul>
+    <li><strong><code>Unnamed: 13</code> is the blood-pressure column</strong> — its header was lost. Values
+      are <code>"SBP/DBP"</code> text, 97.9% parseable; the residue includes <code>"NR"</code>,
+      <code>"40 systolic"</code>, <code>"120/8"</code>, <code>"11070mmhg"</code>, <code>"140)90"</code>.</li>
+    <li><strong><code>SI</code> is a derived variable.</strong> It agrees with <code>HR/SBP ≥ 0.9</code> on
+      <strong>99.0%</strong> of the 295 rows where both exist. Redundant, only 35% filled, leakage-prone.</li>
+    <li><strong><code>red=1</code> is the target.</strong> 505 positive / 806 negative across the unified
+      register = <strong>38.5% positive</strong> — an unusually high critical rate, suggesting “red” here
+      means “needs a resuscitation bay”, not “peri-arrest”.</li>
+    <li><strong><code>Off hours triage=1</code> is unreliable.</strong> Of 88 submissions between 18:00 and
+      23:59, <strong>76 are coded 0</strong>. Derive off-hours from the timestamp instead.</li>
+    <li><code>GI emerg</code> (14% filled) and <code>stroke</code> (29% filled) were added or abandoned
+      mid-study. Their missingness is structural, not random — never impute them.</li>
+    <li><strong>19 columns at the right edge</strong> (<code>Airway</code>, <code>GCS V</code>,
+      <code>Pupils</code>, <code>Capillary Refill Time</code>…) are filled for only 4–5 of 880 rows, all
+      submitted in April 2025. These are the <em>2024 form's</em> questions bleeding into the old sheet —
+      direct evidence that the same Google Form was later rebuilt into Dataset 3.</li>
+    <li><strong>12 columns are completely empty.</strong></li>
+  </ul>
+
+  <h3><code>Sheet1</code> — the reference list nobody used</h3>
+  <p>1,191 rows of the form <code>"&lt;disease&gt;&lt;source&gt;&lt;ICD-10&gt;"</code>, e.g.
+  <code>"ShigellosisNNDSSA03.9"</code>. 94.9% end in a valid ICD-10 pattern, and the chapter distribution is
+  injury-heavy (S: 205, T: 122, K: 111, I: 76) — consistent with an ED. <strong>The 2024 file contains the
+  identical list plus 3 extra entries</strong>, proving shared lineage between the two workbooks.</p>
+
+  <p>Critically, only <strong>4 of 940</strong> distinct complaint strings in the 2024 file match this list
+  exactly. The list was never actually used to constrain data entry — it sits there unused while staff type
+  free text. That makes it your ready-made coding scheme for retrospectively structuring the complaint field.</p>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 4 ══ -->
+<section id="s4">
+  <div class="sec-head"><span class="sec-n">04</span><h2>Dataset 3 — <span class="mono" style="font-size:.7em">NIMS TRIAGE 2024 (Responses).xlsx</span></h2></div>
+
+  <h3>Structure</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Sheet</th><th class="num">Excel size</th><th>Real content</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">Form Responses 1</td><td class="num">3306 × 36</td><td><strong>1,125 encounters</strong> — rows 1126–3306 are blank, an autofilter-range artefact</td></tr>
+        <tr><td class="mono">Sheet1</td><td class="num">2168 × 1</td><td>The same 1,191-row ICD list, plus 3 entries</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>No hidden sheets, no formulas, no merged cells. Autofilter set on <code>A1:AK3306</code>.</p>
+
+  <h3>What a row represents</h3>
+  <p>One ED triage encounter recorded on a substantially better form — a full <strong>ABCDE primary
+  survey</strong>:</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Stage</th><th>Fields captured</th></tr></thead>
+      <tbody>
+        <tr><td><strong>A</strong>irway</td><td>Airway status, Intervention</td></tr>
+        <tr><td><strong>B</strong>reathing</td><td>Respiratory rate, Bilateral air entry, SpO₂, Other findings, Intervention</td></tr>
+        <tr><td><strong>C</strong>irculation</td><td>Pulse, Blood pressure, Capillary refill time, Other, Intervention</td></tr>
+        <tr><td><strong>D</strong>isability</td><td>GCS E/V/M, Pupils, Focal neurological deficit, Intervention</td></tr>
+        <tr><td><strong>E</strong>xposure</td><td>Temperature, Log roll, Intervention</td></tr>
+        <tr><td>Outcome of triage</td><td><strong>Area Triaged</strong>, <strong>ESI Triage Category</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Plus pain score (NRS 0–10), registration number, name, age, sex, and free-text complaint.</p>
+
+  <p>Timestamps run <strong>Dec 2024 → Aug 2025</strong>, but <strong>96% of the volume falls in
+  March–May 2025</strong> across just 62 distinct days. Two-thirds of all records come from a single month
+  (April 2025, n = 708). Treat this as a ~3-month intensive study window, not a 9-month series.</p>
+
+  <h3>The targets</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>ESI level</th><th class="num">1</th><th class="num">2</th><th class="num">3</th><th class="num">4</th><th class="num">5</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">n</th><td class="num">129</td><td class="num">376</td><td class="num">492</td><td class="num">111</td><td class="num"><strong>14</strong></td></tr>
+        <tr><th scope="row">%</th><td class="num">11.5</td><td class="num">33.5</td><td class="num">43.9</td><td class="num">9.9</td><td class="num"><strong>1.2</strong></td></tr>
+      </tbody>
+      <caption>Emergency Severity Index, 1 = resuscitation to 5 = non-urgent. ESI 5 has 14 cases — do not attempt 5-class classification. Collapse to high acuity (1–2) vs lower acuity (3–5), a near-balanced 45/55 split.</caption>
+    </table>
+  </div>
+
+  <p><strong><code>Area Triaged</code></strong> — Red Triage (583), Table 1 (372), Table 2 (170) — is
+  near-deterministic given ESI: 126 of 129 ESI-1 patients went to Red Triage, and Table 2 received zero
+  ESI-1 patients. It is a parallel expression of the same decision, not an independent variable.</p>
+
+  <h3>Physiology does stratify by ESI — modestly</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Variable</th><th class="num">Spearman ρ</th><th class="num">p</th></tr></thead>
+      <tbody>
+        <tr><td>GCS total</td><td class="num"><strong>+0.220</strong></td><td class="num">3e-13</td></tr>
+        <tr><td>SpO₂</td><td class="num"><strong>+0.175</strong></td><td class="num">3e-09</td></tr>
+        <tr><td>Respiratory rate</td><td class="num"><strong>−0.171</strong></td><td class="num">9e-09</td></tr>
+        <tr><td>Heart rate</td><td class="num"><strong>−0.149</strong></td><td class="num">5e-07</td></tr>
+        <tr><td>Shock index</td><td class="num">−0.089</td><td class="num">0.003</td></tr>
+        <tr><td>Age</td><td class="num">−0.064</td><td class="num">0.03</td></tr>
+        <tr><td>Systolic BP</td><td class="num">+0.000</td><td class="num">1.0</td></tr>
+        <tr><td>Pain score</td><td class="num">−0.008</td><td class="num">0.79</td></tr>
+        <tr><td>Temperature</td><td class="num">+0.037</td><td class="num">0.22</td></tr>
+      </tbody>
+      <caption>Positive ρ = higher ESI number, i.e. less sick. Every significant association points the physiologically correct way.</caption>
+    </table>
+  </div>
+  <p>Two are notable for being <em>absent</em>: <strong>systolic BP carries literally no signal</strong>
+  (ρ = 0.000), and <strong>pain score — the only field that is 100% filled — is unrelated to acuity</strong>.
+  The pain field is mandatory in the form and is being completed reflexively.</p>
+
+  <h3>Inter-rater variability is the biggest hidden structure</h3>
+  <p>35 staff accounts. Among the 22 with ≥20 records, the share of patients each assigns to
+  <strong>ESI 1</strong> ranges from <strong>0% to 48%</strong>.</p>
+  <ul>
+    <li>Kruskal–Wallis (ESI ~ rater): <strong>H = 131.3, p = 6×10⁻¹⁸</strong></li>
+    <li>Between-rater SD of mean ESI = 0.336 vs overall SD = 0.854 — rater identity alone explains a substantial fraction of the label's variance</li>
+    <li><strong>Rater identity alone predicts high-acuity at AUC 0.631</strong>, against 0.72 for all the physiology combined</li>
+    <li>Five raters produce 37% of all records</li>
+  </ul>
+  <div class="note alert">
+    <p class="note-l">What this means for the label</p>
+    <p>Your label is not “the patient's acuity”. It is “the acuity <em>this particular nurse</em> assigned”.
+    Any model must be validated with grouped cross-validation by rater, and any inter-rater reliability
+    claim needs paired assessments that this dataset does not contain.</p>
+  </div>
+
+  <h3>Data-quality defects</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Defect</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Registration number is not a reliable key</strong></td><td>Only 1,021/1,125 have the expected 15 digits (observed lengths 9–18). 69 values repeat; <strong>61 of those map to more than one patient name</strong></td></tr>
+        <tr><td>Temperature mixes °C into a °F field</td><td>22 out-of-range values including 37.5, 37.9 and 4.0</td></tr>
+        <tr><td>Impossible vitals</td><td>SBP 700 and 11; DBP 199 and 10; HR 11 and 16; RR 0 and 65; SpO₂ 0; GCS total 16 (V recorded as 6)</td></tr>
+        <tr><td>Free-text intervention fields unusable</td><td><code>Intervention (Disability)</code> has 138 distinct values, overwhelmingly <code>No</code> / <code>Nil</code> / <code>-</code> / <code>.</code>; same for Log Roll (65) and Intervention-Exposure (96)</td></tr>
+        <tr><td>Complaint field near-unique</td><td>967 distinct strings for 1,125 records; 27 differ only by capitalisation; 6.9% contain <code>?</code> (diagnostic uncertainty)</td></tr>
+        <tr><td>Sex capitalisation</td><td><code>Male</code> (716), <code>Female</code> (408), <code>male</code> (1)</td></tr>
+        <tr><td>Completeness collapses over time</td><td><code>Intervention (Airway)</code> fill rate falls 33% → 9% → 0% from Dec 2024 to Jul 2025; <code>Intervention (Breathing)</code> 33% → 7%</td></tr>
+        <tr><td><code>Disposition</code> and <code>GRBS</code> are ~empty</td><td>The two columns that would have given you an outcome</td></tr>
+        <tr><td><code>Column 31</code></td><td>13 rows of <code>"Option 1"</code> — a form artefact</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 5 ══ -->
+<section id="s5">
+  <div class="sec-head"><span class="sec-n">05</span><h2>Cross-dataset relationship analysis</h2></div>
+
+  <h3>The linkage tests, and what they returned</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Test</th><th>Result</th><th>Interpretation</th></tr></thead>
+      <tbody>
+        <tr><td>Registration-number overlap, APACHE ∩ 2024</td><td class="num"><strong>0</strong> of 78 vs 1,052</td><td>No shared patients</td></tr>
+        <tr><td>Registration-number overlap, APACHE ∩ 2023</td><td class="num"><strong>0</strong></td><td>2023 form never collected them</td></tr>
+        <tr><td>Registration-number overlap, 2023 ∩ 2024</td><td class="num"><strong>0</strong></td><td>No shared patients</td></tr>
+        <tr><td>Name overlap, APACHE ∩ 2024</td><td>1 pair, ages differ by 16 y</td><td>Coincidence</td></tr>
+        <tr><td>Name overlap, 2023 ∩ 2024</td><td>109 pairs, only 13 (12%) within 2 y of age</td><td>Mostly common-name collisions; the 13 plausible ones are 234–350 days apart — genuine re-attendances, far too few to join on</td></tr>
+        <tr><td>Timestamp overlap</td><td class="num">0 across all pairs</td><td>Disjoint collection windows</td></tr>
+        <tr><td>Staff email overlap</td><td>2023↔2024: <strong>18 shared</strong>; within 2023: <strong>25 shared</strong></td><td><strong>Same clinical department</strong></td></tr>
+        <tr><td>ICD reference list</td><td>2024 list = 2023 list + 3 entries, identical prefix</td><td><strong>Same workbook lineage</strong></td></tr>
+        <tr><td>Registration-number format</td><td><code>3310-1-YY-NNNNNNNN</code>; APACHE 73/78 registered in 2024, 2024 file 765/1052 registered in 2025</td><td><strong>Same hospital numbering system</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>What the three files are, relative to one another</h3>
+  <p>They are <strong>complementary, sequential snapshots of one service</strong> — not versions, not
+  splits, not train/test, not modalities of the same rows.</p>
+
+  <div class="lineage">
+    <div class="lin-top"><span>ED arrival</span><span>ICU admission →</span></div>
+    <div class="lin-grid">
+      <div class="lin-card">
+        <h5>Dataset 2</h5>
+        <p class="lin-sub">2023 triage · minimal form</p>
+        <dl>
+          <dt>Window</dt><dd>Jun 23 – Aug 24</dd>
+          <dt>n</dt><dd>1,311</dd>
+          <dt>Target</dt><dd>red = 1</dd>
+        </dl>
+      </div>
+      <div class="lin-card">
+        <h5>Dataset 3</h5>
+        <p class="lin-sub">2024–25 triage · full ABCDE form</p>
+        <dl>
+          <dt>Window</dt><dd>Dec 24 – Aug 25</dd>
+          <dt>n</dt><dd>1,125</dd>
+          <dt>Target</dt><dd>ESI 1–5</dd>
+        </dl>
+      </div>
+      <div class="lin-card icu">
+        <h5>Dataset 1</h5>
+        <p class="lin-sub">APACHE IV · intensive care</p>
+        <dl>
+          <dt>Window</dt><dd>Oct 2024</dd>
+          <dt>n</dt><dd>78</dd>
+          <dt>Target</dt><dd>none</dd>
+        </dl>
+      </div>
+    </div>
+    <p class="lin-foot">Same staff · same hospital · same registration system<br><b>Zero shared patients</b></p>
+  </div>
+
+  <ul>
+    <li><strong>Dataset 2 → Dataset 3 is an instrument upgrade of the same activity.</strong> Same
+      department, 18 shared staff, same ICD reference list, and 19 of Dataset 3's exact question names
+      appear as vestigial columns in Dataset 2's sheet. The crude <code>red=1</code> binary became the
+      standard 5-level ESI; four vitals became a full ABCDE survey. <strong>This is a genuine before/after
+      methods comparison.</strong></li>
+    <li><strong>Dataset 1 is a different care setting entirely.</strong> ICU, not ED. Its October 2024
+      window falls in the <em>gap between</em> the two triage collections (2023 file ends Aug 2024; 2024
+      file starts Dec 2024), so the non-overlap is chronological as much as clinical.</li>
+    <li><strong>Nothing here is a raw/processed pair, a train/test split, or a duplicate</strong> — except
+      <em>inside</em> the APACHE workbook, where Sheet2 duplicates Sheet1's right-hand block, and inside
+      the 2023 workbook, where Sheet2 is a subset of Sheet3.</li>
+  </ul>
+
+  <h3>Can they be combined?</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Combination</th><th>Verdict</th><th>Method</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>2023 <code>Form Responses 1</code> + <code>Sheet3</code></td>
+          <td><span class="pill yes">Yes — you must</span></td>
+          <td><strong>Union</strong> (stack rows). This is one register. Add a <code>source_sheet</code> column. Result: 1,311 encounters with a working <code>Sex</code> variable</td>
+        </tr>
+        <tr>
+          <td>2023 register + 2024 register</td>
+          <td><span class="pill maybe">Shared columns only</span></td>
+          <td>Keep the 9 truly common fields (timestamp, age, sex, complaint, HR, BP, SpO₂, RR, trauma). Harmonise <code>red=1</code> ↔ <code>ESI≤2</code> <em>only as a sensitivity analysis</em> — different instruments, and the mapping is an assumption, not a fact. Always keep an <code>era</code> column</td>
+        </tr>
+        <tr>
+          <td>Any triage file + APACHE</td>
+          <td><span class="pill no">No row-level join</span></td>
+          <td>Zero shared patients. Only cohort-level comparison — “how do ED triage vitals compare with ICU admission physiology?” — is legitimate</td>
+        </tr>
+        <tr>
+          <td>APACHE <code>Sheet1</code> + <code>Sheet2</code></td>
+          <td><span class="pill no">Never merge</span></td>
+          <td>Sheet2 is a duplicate; merging silently duplicates 23 columns</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note alert">
+    <p class="note-l">Do not merge on registration number</p>
+    <p>Even <em>within</em> Dataset 3 it fails: 61 registration values map to more than one patient name,
+    and roughly a quarter have the wrong digit count.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 6 ══ -->
+<section id="s6">
+  <div class="sec-head"><span class="sec-n">06</span><h2>Data-quality scorecard</h2></div>
+  <p>Seven dimensions, 0–100, computed from the measured statistics in
+  <code>csv/data_quality_scorecard.csv</code>.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Dimension</th><th class="num">D1 APACHE</th><th class="num">D2 2023 (unified)</th><th class="num">D3 2024</th></tr></thead>
+      <tbody>
+        <tr><td>Completeness <span style="color:var(--ink-3)">(substantive columns)</span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:100%"></i></span><b>100</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:96.8%"></i></span><b>96.8</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:98.7%"></i></span><b>98.7</b></span></td></tr>
+        <tr><td>Consistency <span style="color:var(--ink-3)">(type / unit / spelling)</span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:91.5%"></i></span><b>91.5</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar b-warn"><i style="width:80%"></i></span><b>80.0</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar b-warn"><i style="width:80%"></i></span><b>80.0</b></span></td></tr>
+        <tr><td>Validity <span style="color:var(--ink-3)">(physiologically possible)</span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:97%"></i></span><b>97.0</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:98%"></i></span><b>98.0</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:97.5%"></i></span><b>97.5</b></span></td></tr>
+        <tr><td>Uniqueness <span style="color:var(--ink-3)">(duplicate freedom)</span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:100%"></i></span><b>100</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:98.8%"></i></span><b>98.8</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:99.3%"></i></span><b>99.3</b></span></td></tr>
+        <tr><td>Structure <span style="color:var(--ink-3)">(one clean table, headers, keys)</span></td>
+          <td class="num"><span class="scorecell"><span class="bar b-warn"><i style="width:65%"></i></span><b>65</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar b-bad"><i style="width:45%"></i></span><b>45</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:80%"></i></span><b>80</b></span></td></tr>
+        <tr><td>Documentation <span style="color:var(--ink-3)">(self-describing, codebook)</span></td>
+          <td class="num"><span class="scorecell"><span class="bar b-bad"><i style="width:25%"></i></span><b>25</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar b-bad"><i style="width:20%"></i></span><b>20</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar b-warn"><i style="width:55%"></i></span><b>55</b></span></td></tr>
+        <tr><td>ML readiness</td>
+          <td class="num"><span class="scorecell"><span class="bar b-bad"><i style="width:50.6%"></i></span><b>50.6</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:88.5%"></i></span><b>88.5</b></span></td>
+          <td class="num"><span class="scorecell"><span class="bar"><i style="width:92.1%"></i></span><b>92.1</b></span></td></tr>
+        <tr style="background:var(--surface-2)"><td><strong>OVERALL</strong></td>
+          <td class="num"><strong>77.2</strong></td><td class="num"><strong>80.2</strong></td><td class="num"><strong>88.1</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ul>
+    <li><strong>APACHE scores highest on data hygiene and lowest on usefulness.</strong> Perfect
+      completeness, zero duplicates — and no target, n = 78, six dead columns. It is a beautifully kept
+      notebook of an experiment whose conclusion was never written down.</li>
+    <li><strong>2023 is structurally the worst</strong> (45): a headerless sheet, a hidden sex split, a lost
+      BP header, a subset scratch sheet, cryptic <code>=1</code> headers, no patient identifier.</li>
+    <li><strong>2024 is the strongest overall</strong> and the only file with both a real target and enough rows.</li>
+    <li><strong>Documentation is poor everywhere.</strong> No codebook exists for any file. Every coding
+      scheme in this report — <code>Sex 1=male</code>, <code>red=1</code>, <code>T</code>=tubed,
+      <code>BERTL</code> — was inferred from the data, not read from documentation.</li>
+  </ul>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 7 ══ -->
+<section id="s7">
+  <div class="sec-head"><span class="sec-n">07</span><h2>Use-case matrix</h2></div>
+  <p>Each cell is a judgement about fitness, not a rating of the data.
+  <span class="pill yes">Strong</span> <span class="pill maybe">Possible</span>
+  <span class="pill no">Inappropriate</span></p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Use case</th><th>D1 APACHE</th><th>D2 2023</th><th>D3 2024</th><th>Combined</th></tr></thead>
+      <tbody>
+        <tr><td>Descriptive epidemiology / case-mix</td><td><span class="pill yes">Strong</span></td><td><span class="pill yes">Strong</span></td><td><span class="pill yes">Strong</span></td><td><span class="pill yes">Strong</span></td></tr>
+        <tr><td>Visualisation / dashboard</td><td><span class="pill maybe">small n</span></td><td><span class="pill yes">Strong</span></td><td><span class="pill yes">Strong</span></td><td><span class="pill yes">Strong</span></td></tr>
+        <tr><td>Hypothesis testing</td><td><span class="pill maybe">underpowered</span></td><td><span class="pill yes">Strong</span></td><td><span class="pill yes">Strong</span></td><td><span class="pill yes">Strong</span></td></tr>
+        <tr style="background:var(--accent-soft)"><td><strong>Instrument comparison (2023 vs 2024 form)</strong></td><td><span class="pill no">No</span></td><td><span class="pill yes">Strong</span></td><td><span class="pill yes">Strong</span></td><td><span class="pill yes">Best use</span></td></tr>
+        <tr><td>Sex differences in ED presentation</td><td><span class="pill maybe">62M/16F</span></td><td><span class="pill yes">by design</span></td><td><span class="pill yes">Strong</span></td><td><span class="pill yes">Strong</span></td></tr>
+        <tr><td>Binary classification (acuity)</td><td><span class="pill no">no target</span></td><td><span class="pill yes">AUC ≈ .70</span></td><td><span class="pill yes">AUC ≈ .72</span></td><td><span class="pill maybe">era confounded</span></td></tr>
+        <tr><td>Ordinal 5-class ESI prediction</td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td><td><span class="pill maybe">ESI-5 n=14</span></td><td><span class="pill maybe">Possible</span></td></tr>
+        <tr><td>Regression (predict a score)</td><td><span class="pill no">circular</span></td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td></tr>
+        <tr><td>Clustering / phenotyping</td><td><span class="pill no">n too small</span></td><td><span class="pill maybe">Possible</span></td><td><span class="pill yes">Strong</span></td><td><span class="pill maybe">Possible</span></td></tr>
+        <tr><td>Anomaly detection</td><td><span class="pill maybe">QA only</span></td><td><span class="pill maybe">QA only</span></td><td><span class="pill yes">data-entry QA</span></td><td><span class="pill maybe">Possible</span></td></tr>
+        <tr><td>Time series / forecasting</td><td><span class="pill no">1 month</span></td><td><span class="pill no">113 scattered days</span></td><td><span class="pill no">62 days</span></td><td><span class="pill no">No</span></td></tr>
+        <tr><td>Longitudinal / repeated measures</td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td><td><span class="pill no">one row per encounter</span></td><td><span class="pill no">No</span></td></tr>
+        <tr><td>Survival analysis</td><td><span class="pill no">no outcome</span></td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td></tr>
+        <tr><td>Mortality prediction</td><td><span class="pill no">no outcome</span></td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td></tr>
+        <tr><td><strong>Inter-rater variability study</strong></td><td><span class="pill no">No</span></td><td><span class="pill yes">27 raters</span></td><td><span class="pill yes">35 raters</span></td><td><span class="pill yes">Strong</span></td></tr>
+        <tr><td>APACHE IV external validation</td><td><span class="pill no">needs outcomes</span></td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td></tr>
+        <tr><td>NLP on complaint text</td><td><span class="pill maybe">78 strings</span></td><td><span class="pill maybe">626 strings</span></td><td><span class="pill yes">967 + ICD list</span></td><td><span class="pill yes">Strong</span></td></tr>
+        <tr><td>Clinical deployment / decision support</td><td><span class="pill no">No</span></td><td><span class="pill no">No</span></td><td><span class="pill no">not validated</span></td><td><span class="pill no">No</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 8 ══ -->
+<section id="s8">
+  <div class="sec-head"><span class="sec-n">08</span><h2>ML opportunity assessment</h2></div>
+  <p>These were run as real baselines, not estimates. Code: <code>15_baseline.py</code>.</p>
+
+  <h3>A · High-acuity triage classification <span style="color:var(--ink-3);font-weight:400">— the best available</span></h3>
+  <div class="tw">
+    <table>
+      <tbody>
+        <tr><th scope="row">Inputs</th><td>age, sex, HR, SBP, DBP, RR, SpO₂, temperature, pain, GCS total, shock index, CRT&gt;3s, focal deficit, airway-not-patent</td></tr>
+        <tr><th scope="row">Target</th><td><code>ESI ≤ 2</code> vs <code>ESI ≥ 3</code> — n = 1,122, 45.0% positive</td></tr>
+        <tr><th scope="row">Preprocessing</th><td>parse <code>"SBP/DBP"</code> text; recompute GCS as E+V+M (the <code>GCS</code> column is only 7/1,125 filled); convert the 22 Celsius temperature entries; clip impossible vitals to NaN and impute by median; <strong>drop <code>Area Triaged</code></strong></td></tr>
+        <tr><th scope="row">Models</th><td>logistic regression (interpretable baseline), HistGradientBoosting</td></tr>
+        <tr><th scope="row">Measured result</th><td>LogReg <strong>AUC 0.732</strong> random 5-fold / <strong>0.725</strong> grouped by rater; HistGB 0.726 / 0.719</td></tr>
+        <tr><th scope="row">Top features</th><td>SpO₂ 0.051, age 0.038, shock index 0.037, RR 0.019, HR 0.014, GCS 0.011 <span style="color:var(--ink-3)">(permutation importance)</span></td></tr>
+        <tr><th scope="row">Metrics to report</th><td>AUROC + AUPRC, sensitivity at a fixed high-sensitivity operating point (under-triage is the dangerous error), calibration curve</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Risks, measured</h4>
+  <ul>
+    <li><strong><code>Area Triaged</code> leakage — demonstrated.</strong> Adding it lifts AUC from 0.726 to
+      <strong>0.857</strong>. That 0.13 is pure leakage; the area is assigned <em>with</em> the ESI.</li>
+    <li><strong>Rater effect — measured.</strong> Rater identity alone gives AUC 0.631. Grouped-by-rater CV
+      barely drops the score (0.726 → 0.719) <em>only because raters see similar case mixes</em>; that does
+      not make the label objective. Always report the grouped number.</li>
+    <li><strong>Temporal concentration.</strong> 63% of rows come from a single month — a random split mixes
+      the same week's patients across train and test.</li>
+    <li><strong>The ceiling is real.</strong> ~0.72 from vitals is the honest number. The signal that would
+      push it higher — the free-text complaint — is unstructured.</li>
+  </ul>
+
+  <h3>B · “Red flag” classification (Dataset 2)</h3>
+  <p>Target <code>red=1</code>, n = 1,306, 38.6% positive. <strong>HistGB AUC 0.719 grouped by rater</strong>
+  (LogReg 0.678). Notably, <strong>rater identity alone gives AUC 0.499 — no rater effect at all</strong>, in
+  sharp contrast to Dataset 3: the cruder binary label was applied far more consistently than the 5-level
+  ESI. Requires the sheet union first, or <code>Sex</code> is a constant.</p>
+
+  <h3>C · Complaint-text structuring <span style="color:var(--ink-3);font-weight:400">— highest practical value, lowest risk</span></h3>
+  <p>Map 967 free-text complaints onto the 1,191-entry ICD-10 list already sitting unused in
+  <code>Sheet1</code> — fuzzy or embedding match, with human review of low-confidence pairs. This is not
+  prediction; it is the enabling step that makes everything else in the file analysable, and it produces a
+  reusable asset.</p>
+
+  <h3>D · Data-entry anomaly detection</h3>
+  <p>An Isolation Forest or rule ensemble over vitals, flagging implausible entries at submission time. You
+  already have the training signal: SBP 700, temperature 4, GCS 16, SpO₂ 0.</p>
+
+  <h3>Opportunities to reject</h3>
+  <ul>
+    <li><strong>Mortality prediction from APACHE</strong> — no outcome exists. If you later add one: at ~40%
+      mortality that is 31 events for 47 candidate predictors = <strong>0.7 events per variable</strong>;
+      you need ≥ 10.</li>
+    <li><strong>Regressing <code>Estimated mortality rate</code> or <code>Estimated LOS</code></strong> —
+      these are deterministic calculator outputs of the same input columns. You would be fitting a formula
+      and reporting an R² near 1 as if it meant something.</li>
+    <li><strong>5-class ESI</strong> — 14 cases in class 5.</li>
+    <li><strong>Any patient-level join across the three files</strong> — zero overlap.</li>
+  </ul>
+
+  <div class="note">
+    <p class="note-l">The leakage checklist for this data</p>
+    <ol style="margin-bottom:0">
+      <li>Drop <code>Area Triaged</code> from any ESI model.</li>
+      <li>Drop <code>SI</code> from any 2023 model — or drop HR and SBP. Not all three.</li>
+      <li>Drop the <code>Intervention (*)</code> columns from acuity models: they record what was done <em>in response</em> to the assessment.</li>
+      <li>Drop <code>GCS</code> (the total) when using E/V/M.</li>
+      <li>Never random-split without grouping by rater; report the grouped number as the headline.</li>
+      <li>If you union 2023 + 2024, an <code>era</code> column is mandatory — otherwise the model learns “which form was this”, not “how sick is this patient”.</li>
+    </ol>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 9 ══ -->
+<section id="s9">
+  <div class="sec-head"><span class="sec-n">09</span><h2>Recommended visualisations</h2></div>
+  <p>Nine figures were generated in <code>analysis_output/plots/</code>.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th class="num">#</th><th>Plot</th><th>What it establishes</th></tr></thead>
+      <tbody>
+        <tr><td class="num">01</td><td>Monthly volume, all three collections</td><td>The three windows do not overlap; the ICU month sits in the triage gap</td></tr>
+        <tr><td class="num">02</td><td>Age × sex histograms per dataset</td><td>Case mix is comparable; the ICU cohort is not a subset</td></tr>
+        <tr><td class="num">03</td><td>ESI distribution + Area×ESI stacked bars</td><td>Class imbalance and the Area-Triaged leakage</td></tr>
+        <tr><td class="num">04</td><td>Vitals boxplots by ESI (small multiples)</td><td>Real but heavily overlapping separation</td></tr>
+        <tr><td class="num">05</td><td>% ESI-1 by rater</td><td>The 0–48% inter-rater spread</td></tr>
+        <tr><td class="num">06</td><td>Missingness maps</td><td>Abandoned form questions; APACHE's empty outcome columns</td></tr>
+        <tr><td class="num">07</td><td>APACHE score vs predicted mortality; score−APS vs age</td><td>The score's internal arithmetic; why mortality is circular</td></tr>
+        <tr><td class="num">08</td><td>Correlation matrices</td><td>Derived-variable blocks; weak inter-vital correlation</td></tr>
+        <tr><td class="num">09</td><td>RR / SpO₂ / HR densities by red-flag status</td><td>What actually drives the 2023 label</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>Worth building next:</strong> a Sankey of ESI → Area Triaged; a calibration plot once a model is
+  fit; a per-rater ESI distribution heatmap; a complaint-category treemap after the ICD mapping.</p>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 10 ══ -->
+<section id="s10">
+  <div class="sec-head"><span class="sec-n">10</span><h2>Limitations</h2></div>
+  <p>Separating what the data proves from what it merely suggests, and from what it cannot say at all.</p>
+
+  <div class="epi">
+    <div class="epi-col proven">
+      <h4>Proven by the data</h4>
+      <ul>
+        <li>Row counts, date ranges, and column semantics for all high-confidence fields</li>
+        <li>The 2023 sex split — <code>Sex</code> is 100% constant within each sheet</li>
+        <li>Zero patient overlap across the three files (exact set intersection on registration numbers)</li>
+        <li>APACHE <code>Sheet2</code> is a byte-equivalent duplicate of <code>Sheet1</code> columns AA:AW</li>
+        <li><code>SI</code> = <code>HR/SBP ≥ 0.9</code>, 99.0% agreement</li>
+        <li>The inter-rater effect (p = 6×10⁻¹⁸) and the Area-Triaged leakage (ΔAUC = +0.13)</li>
+        <li>The 2024 ICD list = the 2023 list + 3 entries</li>
+      </ul>
+    </div>
+    <div class="epi-col inferred">
+      <h4>Reasonably inferred</h4>
+      <ul>
+        <li><strong>Same hospital</strong> — shared 15-digit registration format, 18 shared staff accounts, shared reference list. <em>High confidence</em></li>
+        <li><strong><code>Sex</code>: 1 = male, 0 = female</strong> — the 2024 file's explicit labels give the same ~2:1 ratio and trauma differential. <em>High</em></li>
+        <li><strong>APACHE is a prospective research dataset</strong> — the four non-APACHE additions and the one-month consecutive design. <em>Medium-high</em></li>
+        <li><strong>The 2023→2024 form change was an instrument upgrade</strong> — vestigial columns, shared staff. <em>High</em></li>
+        <li><strong>The 2023 sex split was deliberate analytic separation</strong> rather than two physical stations — 4-minute cross-sheet interleaving by the same collector makes two locations implausible. <em>Medium</em></li>
+      </ul>
+    </div>
+    <div class="epi-col unknown">
+      <h4>Cannot be established</h4>
+      <ul>
+        <li><strong>The hospital's identity.</strong> “NIMS” in the filename is suggestive; nothing inside the files confirms it, and I will not assert a provenance the data does not carry</li>
+        <li><strong>Any patient outcome</strong> — survived, died, admitted, discharged. Absent from all three files</li>
+        <li><strong>Whether triage decisions were correct.</strong> No reference standard, no expert re-review, no outcome</li>
+        <li><strong>Ethics approval, consent, or study protocol.</strong> Nothing in the metadata speaks to governance</li>
+        <li>Why the 2023 collection paused Sep 2023 – Mar 2024, or why the 2024 collection is 63% April</li>
+        <li><strong>Whether blank interventions mean “none performed” or “not recorded”</strong> — this changes the meaning of ~90% of those columns, and only the collecting team can resolve it</li>
+        <li>Who “Ashima Sharma” is relative to the study — only that this account created the APACHE workbook</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="note alert">
+    <p class="note-l">Governance</p>
+    <p>All three files contain direct identifiers — names, a phone-number column in APACHE, registration
+    numbers, staff emails. Before any sharing, publication, or cloud analysis: drop <code>NAME</code>,
+    <code>PHONE No</code> and <code>CR No</code>; replace staff emails with salted hashes; consider
+    date-shifting. Confirm the ethics approval covers secondary analysis.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 11 ══ -->
+<section id="s11">
+  <div class="sec-head"><span class="sec-n">11</span><h2>Prioritised next steps</h2></div>
+
+  <h4>Do first — these unblock everything else</h4>
+  <ol class="steps">
+    <li><p><strong>Union the two 2023 sheets.</strong></p><p>Add a <code>source_sheet</code> column, restore
+      the lost BP header, add a proper header row to <code>Sheet3</code>. Without this you are analysing men
+      only. <em>Already done — see <code>csv/unified_2023_register_DEID.csv</code>.</em></p></li>
+    <li><p><strong>Go and get the outcomes.</strong></p><p>For the 78 APACHE patients you have registration
+      numbers and a one-month window — the ICU discharge register will close this in an afternoon. This
+      single action converts the weakest file into a publishable APACHE IV external-validation study, and is
+      by far the highest-value action available to you.</p></li>
+    <li><p><strong>Write a codebook.</strong></p><p>One page per file: every column, its coding, its units.
+      Everything in sections 2–4 above was reverse-engineered; the next person should not have to.</p></li>
+    <li><p><strong>De-identify</strong> and store the analysis copies separately from the originals.</p></li>
+  </ol>
+
+  <h4>Do next</h4>
+  <ol class="steps" start="5" style="counter-reset:s 4">
+    <li><p>Fix the known unit defects: WBC (mixed scales), Urea and Albumin (mislabelled), the 22 Celsius temperature entries.</p></li>
+    <li><p>Map the free-text complaints onto the ICD list already in <code>Sheet1</code>, and switch the live form to a dropdown backed by it so the problem stops recurring.</p></li>
+    <li><p>Delete APACHE <code>Sheet2</code> and 2023 <code>Sheet2</code> from working copies — both are duplicates that invite a bad merge.</p></li>
+  </ol>
+
+  <h4>Then, the analyses actually worth doing</h4>
+  <ol class="steps" start="8" style="counter-reset:s 7">
+    <li><p><strong><s>The 2023-vs-2024 instrument comparison.</s> Corrected 20 Aug 2026 — this recommendation
+      was wrong.</strong></p><p>Every candidate before/after outcome was subsequently tested and all are null
+      or untestable: core-vitals completeness 97.2% → 96.1% (risk difference −1.1 pp, 95% CI −2.5 to +0.4,
+      p = 0.167 — the old form was already at ceiling); within-clinician high-acuity rate +2.0 pp (95% CI
+      −16.8 to +20.9); ICC difference +0.039 (95% CI −0.098 to +0.146). The apparent gain in information
+      captured (4 → 12 items) is tautological, since the 2024 fields did not exist on the 2023 form. Case-mix
+      also drifted between eras (RR SMD +0.232, SpO₂ SMD −0.284), and a two-period design cannot separate the
+      instrument from everything else that changed. <strong>Do not build a paper on this.</strong></p></li>
+    <li><p><strong>The inter-clinician variability study — the strongest study in the three files.</strong></p>
+      <p>Between-clinician variation in high-acuity designation is large (ICC 0.113, 95% CI 0.041–0.205;
+      median odds ratio 2.0–2.7), survives adjustment for all 16 physiology variables, and replicates
+      independently in the 2023 cohort under a different instrument (ICC 0.074, 95% CI 0.016–0.186). The full
+      study protocol is in the companion document.</p></li>
+    <li><p>Fit the acuity model with grouped CV, report AUROC/AUPRC and calibration, and present it as a research
+      finding — not a tool.</p></li>
+    <li><p><strong>Add a <code>Disposition</code> field to the live form.</strong></p><p>It is the outcome you are
+      missing, it is free to collect, and without it none of this can ever become outcome-linked research.</p></li>
+  </ol>
+</section>
+
+<hr class="rule">
+
+<!-- ══ 12 ══ -->
+<section id="s12">
+  <div class="sec-head"><span class="sec-n">12</span><h2>Plain-English verdict</h2></div>
+
+  <div class="verdict">
+    <div class="qa">
+      <h3>What exactly do I have?</h3>
+      <p>Three clinical data collections from one hospital's emergency and critical-care service: two
+      generations of an emergency-department triage register (1,311 and 1,125 patient encounters), and one
+      month of ICU severity scoring on 78 ventilated patients. They were collected by overlapping staff
+      using the same hospital's registration system, over three periods that do not overlap.</p>
+    </div>
+
+    <div class="qa">
+      <h3>What does it contain?</h3>
+      <p>Vital signs, presenting complaints and a triage urgency decision for roughly 2,400 ED patients; and
+      a complete APACHE IV physiology panel for 78 ICU admissions. Identifiable patient data throughout. No
+      patient outcomes anywhere.</p>
+    </div>
+
+    <div class="qa">
+      <h3>How are the three related?</h3>
+      <p>Same hospital, same department, <strong>zero shared patients</strong>. Datasets 2 and 3 are the same
+      activity <em>before and after a form redesign</em> — that is the real relationship. Dataset 1 is a
+      different care setting in the calendar gap between them. Inside the 2023 file, two sheets are one
+      register split by sex and must be recombined; inside the APACHE file, one sheet is a duplicate of the
+      other.</p>
+    </div>
+
+    <div class="qa">
+      <h3>What can I realistically do with them?</h3>
+      <p>Descriptive epidemiology, sex- and acuity-stratified comparisons, a genuine before/after comparison
+      of the two triage instruments, an inter-rater variability study, and a research-grade acuity classifier
+      at AUC ≈ 0.72. What you cannot do is anything requiring an outcome — no mortality prediction, no
+      survival analysis, no validation of whether the triage decisions were right.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Which is most useful?</h3>
+      <p><code>NIMS TRIAGE 2024 (Responses).xlsx</code> — 1,125 rows, a structured ABCDE assessment, a
+      standard ESI target, and the best quality score (88/100). But the <strong>most valuable single asset is
+      the 2023-vs-2024 pair</strong>, because a before/after instrument comparison in the same department is
+      a study you can write today with no new data.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Can they be combined?</h3>
+      <p>The two 2023 sheets: <strong>yes, and you must</strong> — union them. The 2023 and 2024 registers:
+      <strong>yes, on the nine shared columns only</strong>, with an <code>era</code> flag and the harmonised
+      target treated as an assumption. APACHE with either triage file: <strong>no</strong> — zero shared
+      patients means cohort comparison only, never a row-level join.</p>
+    </div>
+
+    <div class="qa">
+      <h3>Are they ML-ready?</h3>
+      <p>Dataset 3: yes, for research. Dataset 2: yes, after the union. Dataset 1: <strong>no</strong> — it
+      has no target and 78 rows. And none of the three is remotely ready for a deployed clinical tool,
+      because none contains an outcome against which “correct” could be defined.</p>
+    </div>
+
+    <div class="qa">
+      <h3>What are the biggest limitations?</h3>
+      <p><strong>No outcomes anywhere</strong> — the ceiling on everything. <strong>Zero patient
+      overlap</strong> — no longitudinal view of anyone. <strong>Inter-rater variability</strong> — your 2024
+      label is partly a measure of who was on shift. <strong>Free text everywhere</strong> — 967 distinct
+      complaints, 138 spellings of “no intervention”. And <strong>identifiable data</strong> sitting in three
+      unprotected files.</p>
+    </div>
+
+    <div class="qa">
+      <h3>What should I do next?</h3>
+      <p>Recover the ICU outcomes for the 78 APACHE patients — one afternoon in the discharge register turns
+      your weakest file into a publishable validation study. Union the 2023 sheets. Write a codebook. Then run
+      the 2023-vs-2024 instrument comparison, which is sitting there fully formed and needs nothing new.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══ appendix ══ -->
+<section id="sa">
+  <div class="sec-head"><span class="sec-n">—</span><h2>Generated artefacts</h2></div>
+  <p>All outputs are in <code>analysis_output/</code>. The three source workbooks were opened read-only and
+  are unmodified — the checksums at the top of this page match the originals.</p>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Path</th><th>Contents</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">csv/DATA_DICTIONARY.csv</td><td>152 columns: dataset, worksheet, column, type, examples, description, units, role, missing %, unique count, notes, confidence</td></tr>
+        <tr><td class="mono">csv/column_profile_raw.csv</td><td>Machine-generated statistics for every column</td></tr>
+        <tr><td class="mono">csv/data_quality_scorecard.csv</td><td>The seven-dimension scores in section 6</td></tr>
+        <tr><td class="mono">csv/dataset_summary.csv</td><td>One-line summary per dataset</td></tr>
+        <tr><td class="mono">csv/unified_2023_register_DEID.csv</td><td><strong>The reconstructed 1,311-encounter 2023 register</strong> — de-identified, BP parsed</td></tr>
+        <tr><td class="mono">csv/triage_2024_DEID.csv</td><td>2024 register — de-identified, vitals parsed, GCS recomputed</td></tr>
+        <tr><td class="mono">plots/01–09*.png</td><td>The nine figures in section 9</td></tr>
+        <tr><td class="mono">01_inventory.py … 15_baseline.py</td><td>Every step, re-runnable in order</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="colophon">
+    <b>Method</b> — OOXML package inspection (zipfile + openpyxl) · pandas profiling · scipy.stats ·
+    scikit-learn with GroupKFold by rater<br>
+    <b>Sources</b> — opened read-only; MD5 verified before and after<br>
+    <b>Reproducibility</b> — 15 numbered scripts, run in order, no manual steps<br>
+    <b>Analysis date</b> — 19 August 2026
+  </p>
+</section>
+
+</main>
+</div>
+</div>

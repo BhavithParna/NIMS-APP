@@ -1,0 +1,4 @@
+dataset,entity,n,period,setting,target,identifiers,raters
+APACHE 4.xlsx,one ICU admission,78,01-31 Oct 2024,ICU,none recorded (Outcome column empty),"Name, phone, CR no (all present)",n/a (single investigator file)
+NIMS TRIAGE 2023.xlsx,one ED triage encounter,1311,Jun 2023 - Aug 2024 (+4 stragglers Apr 2025),Emergency triage,red=1 (critical) - 38.5% positive,Name only (no CR no),27 staff Google accounts
+NIMS TRIAGE 2024 (Responses).xlsx,one ED triage encounter,1125,Dec 2024 - Aug 2025 (96% Mar-May 2025),Emergency triage,ESI category 1-5 + Area Triaged,Name + CR no (unreliable),35 staff Google accounts
