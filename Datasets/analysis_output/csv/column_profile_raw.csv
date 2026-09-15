@@ -1,0 +1,153 @@
+table,col_index,column,dtype,non_null,missing_pct,unique,numeric_parse_rate,examples,top_values,mode_share_pct,case_ws_collapse,min,q1,median,mean,q3,max,std,zeros,negatives,skew,outliers_iqr
+D1_APACHE_Sheet1,0,Date          S.No,str,78,0.0,78,0.0,01-10-24       01 | 02-10-24       02   | 03-10-24       03 | 03-10-24       04,01-10-24       01(1) | 02-10-24       02(1) | 03-10-24       03(1) | 03-10-24       04(1) | 04-10-24       05(1) | 05-10-24       05(1),1.3,0.0,,,,,,,,,,,
+D1_APACHE_Sheet1,1,       NAME,str,78,0.0,78,0.0,<PII redacted>,<PII redacted>,1.3,0.0,,,,,,,,,,,
+D1_APACHE_Sheet1,2,       AGE,float64,78,0.0,43,100.0,34.0 | 55.0 | 62.0 | 65.0,,,,16.0,36.0,45.0,46.346,59.0,80.0,16.205,0.0,0.0,0.15,0.0
+D1_APACHE_Sheet1,3,         SEX,float64,78,0.0,2,100.0,1.0 | 0.0,,,,0.0,1.0,1.0,0.795,1.0,1.0,0.406,16.0,0.0,-1.46,16.0
+D1_APACHE_Sheet1,4,       CRNo,float64,78,0.0,78,100.0,<PII redacted>,,,,331012200402942.0,331012401267799.0,331012401301954.0,331012393568503.8,331012401351714.5,331012401379256.0,31443412.617,0.0,0.0,-4.36,7.0
+D1_APACHE_Sheet1,5,   PHONE No,float64,78,0.0,78,100.0,<PII redacted>,,,,6300728368.0,8300531336.0,9370466523.0,8942880206.244,9649524210.25,9989477389.0,980241716.762,0.0,0.0,-1.11,0.0
+D1_APACHE_Sheet1,6,      TEMP(°C) ,float64,78,0.0,14,100.0,38.33 | 37.056 | 38.889 | 39.722,,,,36.556,36.889,37.0,37.045,37.0,39.722,0.429,0.0,0.0,4.57,7.0
+D1_APACHE_Sheet1,7,   MAP(mmHg) ,float64,78,0.0,23,100.0,103.3 | 76.6 | 106.6 | 103.33,,,,36.6,80.0,86.6,88.408,100.0,136.6,16.068,0.0,0.0,-0.14,3.0
+D1_APACHE_Sheet1,8,      HR (/min) ,float64,78,0.0,50,100.0,160.0 | 122.0 | 110.0 | 162.0,,,,52.0,83.25,99.0,102.064,118.0,170.0,26.278,0.0,0.0,0.5,0.0
+D1_APACHE_Sheet1,9,      RR (/min) ,float64,78,0.0,29,100.0,40.0 | 38.0 | 44.0 | 36.0,,,,12.0,17.25,23.0,25.026,30.75,50.0,9.345,0.0,0.0,0.74,0.0
+D1_APACHE_Sheet1,10,Mechanical vent,float64,78,0.0,2,100.0,1.0 | 0.0,,,,0.0,1.0,1.0,0.962,1.0,1.0,0.194,3.0,0.0,-4.8,3.0
+D1_APACHE_Sheet1,11,       Fio2 (%) ,float64,78,0.0,10,100.0,70.0 | 100.0 | 40.0 | 60.0,,,,28.0,50.0,60.0,67.782,80.0,100.0,21.466,0.0,0.0,0.27,0.0
+D1_APACHE_Sheet1,12,    pO2(mmHg) ,float64,78,0.0,72,100.0,124.0 | 43.0 | 182.0 | 193.0,,,,26.0,90.0,148.0,160.141,212.75,397.0,89.53,0.0,0.0,0.54,1.0
+D1_APACHE_Sheet1,13,  pCO2 (mmHg) ,float64,78,0.0,33,100.0,39.0 | 28.0 | 31.0 | 32.0,,,,13.0,26.0,31.0,34.013,37.0,104.0,13.679,0.0,0.0,2.63,6.0
+D1_APACHE_Sheet1,14,    Arterial pH,float64,78,0.0,33,100.0,7.21 | 7.48 | 7.38 | 7.44,,,,7.03,7.335,7.4,7.38,7.46,7.55,0.119,0.0,0.0,-1.01,4.0
+D1_APACHE_Sheet1,15,  Na+ ( mEq/L) ,float64,78,0.0,34,100.0,136.0 | 146.0 | 158.0 | 155.0,,,,121.0,138.0,143.0,144.077,151.0,182.0,10.589,0.0,0.0,0.39,1.0
+D1_APACHE_Sheet1,16,Urine Output(ml/24h) ,float64,78,0.0,43,100.0,1500.0 | 700.0 | 1400.0 | 1300.0,,,,0.0,500.0,925.0,1087.949,1400.0,4600.0,830.602,2.0,0.0,1.54,3.0
+D1_APACHE_Sheet1,17,  Creatinine(mg/dl) ,float64,78,0.0,69,100.0,1.17 | 4.53 | 1.03 | 0.89,,,,0.14,0.715,1.055,2.183,2.33,20.03,2.932,0.0,0.0,3.55,11.0
+D1_APACHE_Sheet1,18,   Urea(mEq/L) ,float64,78,0.0,60,100.0,28.0 | 303.0 | 83.0 | 43.0,,,,10.0,28.25,47.0,83.436,97.75,438.0,88.288,0.0,0.0,2.27,7.0
+D1_APACHE_Sheet1,19,    BSL(mg/dl) ,float64,78,0.0,62,100.0,296.0 | 138.0 | 120.0 | 74.0,,,,34.0,88.0,107.5,132.064,172.25,378.0,67.315,0.0,0.0,1.4,2.0
+D1_APACHE_Sheet1,20,   Albumin(g/L) ,float64,78,0.0,29,100.0,4.0 | 2.8 | 2.5 | 4.1,,,,1.7,2.7,3.3,3.229,3.7,5.1,0.732,0.0,0.0,-0.06,0.0
+D1_APACHE_Sheet1,21,Bilirubin (mg/dl) ,float64,78,0.0,29,100.0,1.2 | 1.3 | 1.5 | 0.8,,,,0.1,0.7,1.0,1.5,1.5,8.0,1.57,0.0,0.0,2.72,11.0
+D1_APACHE_Sheet1,22,       Ht(%) ,float64,78,0.0,64,100.0,44.1 | 36.0 | 25.3 | 31.3,,,,15.5,28.1,33.35,33.255,39.15,50.0,7.398,0.0,0.0,0.11,0.0
+D1_APACHE_Sheet1,23,WBC(x1000/mm3) ,float64,78,0.0,69,100.0,25000.0 | 17500.0 | 10300.0 | 12800.0,,,,10.2,7850.0,11450.0,13182.182,15575.0,89500.0,11106.513,0.0,0.0,4.36,6.0
+D1_APACHE_Sheet1,24,GCS : E,float64,78,0.0,4,100.0,1.0 | 4.0 | 2.0 | 3.0,,,,1.0,1.0,2.0,2.218,3.0,4.0,1.202,0.0,0.0,0.39,0.0
+D1_APACHE_Sheet1,25,V,object,78,0.0,2,1.3,T | 5,T(77) | 5(1),98.7,0.0,,,,,,,,,,,
+D1_APACHE_Sheet1,26,           M,float64,78,0.0,6,100.0,5.0 | 1.0 | 3.0 | 6.0,,,,1.0,3.0,5.0,4.077,5.0,6.0,1.65,0.0,0.0,-0.86,0.0
+D1_APACHE_Sheet1,27,CRF/HD,float64,78,0.0,2,100.0,0.0 | 1.0,,,,0.0,0.0,0.0,0.051,0.0,1.0,0.222,74.0,0.0,4.07,4.0
+D1_APACHE_Sheet1,28,pre ICU LOS(days) ,float64,78,0.0,3,100.0,1.0 | 2.0 | 0.0,,,,0.0,1.0,1.0,0.987,1.0,2.0,0.301,4.0,0.0,-0.35,7.0
+D1_APACHE_Sheet1,29,      Origin  ,str,78,0.0,2,0.0,      Floor |  Other hospital,Floor(77) | Other hospital(1),98.7,0.0,,,,,,,,,,,
+D1_APACHE_Sheet1,30,Emergency Sx,float64,78,0.0,2,100.0,1.0 | 0.0,,,,0.0,0.0,0.0,0.013,0.0,1.0,0.113,77.0,0.0,8.66,1.0
+D1_APACHE_Sheet1,31,  Cirrhosis,float64,78,0.0,2,100.0,0.0 | 1.0,,,,0.0,0.0,0.0,0.013,0.0,1.0,0.113,77.0,0.0,8.66,1.0
+D1_APACHE_Sheet1,32,Hepatic failure,float64,78,0.0,1,100.0,0.0,,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,78.0,0.0,,0.0
+D1_APACHE_Sheet1,33,Metastatic carcinoma,float64,78,0.0,1,100.0,0.0,,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,78.0,0.0,,0.0
+D1_APACHE_Sheet1,34,Lymphoma,float64,78,0.0,1,100.0,0.0,,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,78.0,0.0,,0.0
+D1_APACHE_Sheet1,35,Leukemia/Myeloma,float64,78,0.0,1,100.0,0.0,,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,78.0,0.0,,0.0
+D1_APACHE_Sheet1,36,immunosuppression,float64,78,0.0,1,100.0,0.0,,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,78.0,0.0,,0.0
+D1_APACHE_Sheet1,37,        AIDS,float64,78,0.0,1,100.0,0.0,,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,78.0,0.0,,0.0
+D1_APACHE_Sheet1,38,APACHE IV SCORE,str,78,0.0,58,0.0,110/286 | 134/286 | 99/286 | 88/286,89/286(3) | 84/286(3) | 102/286(3) | 67/286(3) | 93/286(3) | 99/286(2),3.8,0.0,,,,,,,,,,,
+D1_APACHE_Sheet1,39,APS SCORE,str,78,0.0,58,0.0,110/239 | 129/239 | 88/239 | 76/239,76/239(3) | 77/239(3) | 88/239(2) | 51/239(2) | 106/239(2) | 58/239(2),3.8,0.0,,,,,,,,,,,
+D1_APACHE_Sheet1,40,Estimated mortality rate,float64,78,0.0,76,100.0,0.75 | 0.768 | 0.475 | 0.483,,,,0.012,0.261,0.428,0.443,0.62,0.924,0.237,0.0,0.0,0.15,0.0
+D1_APACHE_Sheet1,41,Estimated length of stay,str,78,0.0,59,0.0,    6.5 Days |      5.6 Days |      8.1 Days |      6.2 Days,5.6 Days(7) | 6.2 Days(5) | 7 Days(5) | 6.6 Days(4) | 7.4 Days(4) | 7.1 Days(3),9.0,17.0,,,,,,,,,,,
+D1_APACHE_Sheet1,42,Lactate (mmol/L) ,float64,78,0.0,31,100.0,6.6 | 1.5 | 1.2 | 1.4,,,,0.5,1.2,1.4,2.018,2.0,11.1,1.67,0.0,0.0,2.86,13.0
+D1_APACHE_Sheet1,43,Base deficit mmol/L,float64,78,0.0,60,100.0,11.6 | 2.6 | 6.0 | 1.9,,,,-15.7,-0.55,2.25,2.154,5.05,19.1,6.639,0.0,22.0,-0.13,8.0
+D1_APACHE_Sheet1,44,PEEP,float64,78,0.0,6,100.0,5.0 | 8.0 | 6.0 | 3.0,,,,0.0,5.0,5.0,5.205,5.0,15.0,1.746,3.0,0.0,1.5,21.0
+D1_APACHE_Sheet1,45,Vasopressors,object,78,0.0,8,80.8,0 | Vasopressin and Noradre | Vasopressin and Norad |  Noradrenaline,,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,63.0,0.0,,0.0
+D1_APACHE_Sheet1,46,    Diagnosis,str,78,0.0,78,0.0," RTA with TBA | CVA with AKI | TBA with resolving sepsis and pneum | CVA with CRHD s/p MVR, AF","RTA with TBA(1) | CVA with AKI(1) | TBA with resolving sepsis and pneum(1) | CVA with CRHD s/p MVR, AF(1) | CVA AIS B/L Cerebellar hemisphere, rt hemiplegia? VAP(1) | RTA with injury to head., neck, face&MM#(1)",1.3,0.0,,,,,,,,,,,
+D1_APACHE_Sheet1,47,   Outcome,float64,0,100.0,0,0.0,,,,0.0,,,,,,,,,,,
+D1_APACHE_Sheet1,48,Date of discharge or death,datetime64[us],2,97.44,2,3900.0,2024-04-10 | 2024-09-10,2024-04-10(1) | 2024-09-10(1),50.0,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,0,Timestamp,datetime64[us],876,0.45,876,100.5,2023-06-01 10:01:08.288 | 2023-06-01 10:23:52.778 | 2023-06-01 11:21:05.694 | 2023-06-01 11:25:23.861,,,,-9.223372036854776e+18,1690289532215250.0,1716899298655000.0,-4.022160335824172e+16,1720017527480250.0,1745236773912000.0,6.208926803009924e+17,0.0,4.0,-14.73,4.0
+D2a_2023_FormResponses1,1,Off hours triage=1,float64,875,0.57,2,100.0,0.0 | 1.0,,,,0.0,0.0,0.0,0.023,0.0,1.0,0.15,855.0,0.0,6.39,20.0
+D2a_2023_FormResponses1,2,Email Address,str,876,0.45,27,0.0,<PII redacted>,<PII redacted>,15.3,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,3,Name ,str,876,0.45,856,0.0,<PII redacted>,<PII redacted>,0.3,15.0,,,,,,,,,,,
+D2a_2023_FormResponses1,4,Age,float64,876,0.45,80,100.0,47.0 | 80.0 | 61.0 | 32.0,,,,4.0,36.0,48.0,47.576,59.25,95.0,16.42,0.0,0.0,-0.08,1.0
+D2a_2023_FormResponses1,5,Sex,float64,876,0.45,1,100.0,1.0,,,,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,0.0,,0.0
+D2a_2023_FormResponses1,6,Trauma=1,float64,876,0.45,2,100.0,0.0 | 1.0,,,,0.0,0.0,0.0,0.223,0.0,1.0,0.416,681.0,0.0,1.33,195.0
+D2a_2023_FormResponses1,7,GI emerg=1,float64,124,85.91,2,100.0,0.0 | 1.0,,,,0.0,0.0,0.0,0.258,1.0,1.0,0.439,92.0,0.0,1.11,0.0
+D2a_2023_FormResponses1,8,Complaint/Diagnosis,str,876,0.45,659,0.0,"Cva | Sob loc ?hematuria ?melena | Pedal edema,sob ?cardiac failure | Assault with ?knife deep laceration over",RTA(58) | CVA(20) | Chest pain(19) | SOB(18) | Cva(15) | Seizures(15),6.6,53.0,,,,,,,,,,,
+D2a_2023_FormResponses1,9,cardiac=1,float64,876,0.45,3,100.0,0.0 | 1.0 | 2.0,,,,0.0,0.0,0.0,0.189,0.0,2.0,0.504,754.0,0.0,2.65,122.0
+D2a_2023_FormResponses1,10,stroke=1,float64,252,71.36,2,100.0,1.0 | 0.0,,,,0.0,0.0,0.0,0.433,1.0,1.0,0.496,143.0,0.0,0.27,0.0
+D2a_2023_FormResponses1,11,Pulse rate,float64,879,0.11,103,100.0,70.0 | 94.0 | 110.0 | 96.0,,,,0.0,80.0,89.0,92.012,104.0,189.0,21.006,2.0,0.0,0.47,21.0
+D2a_2023_FormResponses1,12,SI,object,311,64.66,3,99.7,0 | 1 | 324 si signif,,,,0.0,0.0,1.0,0.661,1.0,1.0,0.474,105.0,0.0,-0.68,0.0
+D2a_2023_FormResponses1,13,Unnamed: 13,object,876,0.45,177,0.1,<PII redacted>,<PII redacted>,8.9,19.0,,,,,,,,,,,
+D2a_2023_FormResponses1,14,Saturation,float64,875,0.57,39,100.0,95.0 | 63.0 | 58.0 | 98.0,,,,0.0,95.0,97.0,95.177,98.0,106.0,7.849,2.0,0.0,-6.42,89.0
+D2a_2023_FormResponses1,15,"venti=1, O2 =2",float64,26,97.05,2,100.0,1.0 | 2.0,,,,1.0,1.0,1.0,1.308,2.0,2.0,0.471,0.0,0.0,0.83,0.0
+D2a_2023_FormResponses1,16,Respiratory Rate,float64,875,0.57,29,100.0,19.0 | 20.0 | 18.0 | 17.0,,,,0.0,17.0,18.0,19.305,20.0,98.0,4.971,2.0,0.0,6.19,75.0
+D2a_2023_FormResponses1,17,red=1,object,877,0.34,3,99.9,0 | 1 | 505 red,,,,0.0,0.0,0.0,0.39,1.0,1.0,0.488,534.0,0.0,0.45,0.0
+D2a_2023_FormResponses1,18,Additional information,object,22,97.5,15,13.6,Smoker | ?cardiac failure | Brought dead kco seizures 2° lt icsol wi | Kc/o DCLD with PHTN with ascites,(8) | 3(3) | Smoker(1) | ?cardiac failure(1) | Brought dead kco seizures 2° lt icsol with ME(1) | Kc/o DCLD with PHTN with ascites(1),36.4,2.0,,,,,,,,,,,
+D2a_2023_FormResponses1,19,PAIN SCORE NRS,float64,4,99.55,2,100.0,6.0 | 1.0,,,,1.0,1.0,3.5,3.5,6.0,6.0,2.887,0.0,0.0,0.0,0.0
+D2a_2023_FormResponses1,20,Airway,str,4,99.55,1,0.0,Patent,Patent(4),100.0,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,21,CR Number,float64,4,99.55,4,100.0,<PII redacted>,,,,331012201022183.0,331012425607641.5,331012500469489.5,331012425609313.75,331012500471161.75,331012500476093.0,149724753.866,0.0,0.0,-1.15,1.0
+D2a_2023_FormResponses1,22,Respiratory Rate.1,float64,4,99.55,2,100.0,18.0 | 20.0,,,,18.0,18.0,18.0,18.5,18.5,20.0,1.0,0.0,0.0,1.15,1.0
+D2a_2023_FormResponses1,23,Bilateral Air Entry,str,4,99.55,1,0.0,Present,Present(4),100.0,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,24,Saturation.1,float64,4,99.55,3,100.0,97.0 | 93.0 | 95.0,,,,93.0,94.5,96.0,95.5,97.0,97.0,1.915,0.0,0.0,-0.49,0.0
+D2a_2023_FormResponses1,25,Unnamed: 25,float64,0,100.0,0,0.0,<PII redacted>,<PII redacted>,,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,26,Other,float64,0,100.0,0,0.0,,,,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,27,Intervention,float64,0,100.0,0,0.0,,,,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,28,Capillary Refill Time,str,4,99.55,1,0.0,<3 seconds,<3 seconds(4),100.0,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,29,GCS  E,float64,4,99.55,1,100.0,4.0,,,,4.0,4.0,4.0,4.0,4.0,4.0,0.0,0.0,0.0,,0.0
+D2a_2023_FormResponses1,30,Intervention.1,float64,0,100.0,0,0.0,,,,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,31,Other.1,str,4,99.55,2,0.0,Neck veins | Bleed,Neck veins(2) | Bleed(2),50.0,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,32,INTERVENTION,str,4,99.55,2,0.0,"IV line, IV fluid | IV line","IV line(3) | IV line, IV fluid(1)",75.0,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,33,GCS V,float64,4,99.55,2,100.0,5.0 | 4.0,,,,4.0,4.75,5.0,4.75,5.0,5.0,0.5,0.0,0.0,-1.15,1.0
+D2a_2023_FormResponses1,34,GCS M,float64,4,99.55,2,100.0,6.0 | 5.0,,,,5.0,5.75,6.0,5.75,6.0,6.0,0.5,0.0,0.0,-1.15,1.0
+D2a_2023_FormResponses1,35,Pupils,str,4,99.55,1,0.0,BERTL,BERTL(4),100.0,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,36,Unnamed: 36,float64,0,100.0,0,0.0,<PII redacted>,<PII redacted>,,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,37,Focal Neurological Deficit,str,4,99.55,2,0.0,No | Yes,No(3) | Yes(1),75.0,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,38,Temperature in Fahrenheit,float64,4,99.55,3,100.0,98.0 | 98.8 | 97.0,,,,97.0,97.75,98.4,98.15,98.8,98.8,0.854,0.0,0.0,-0.6,0.0
+D2a_2023_FormResponses1,39,Log Roll,str,4,99.55,2,0.0,No | NO,No(2) | NO(2),50.0,1.0,,,,,,,,,,,
+D2a_2023_FormResponses1,40,INTERVENTION.1,str,4,99.55,3,0.0,No | NIL | Nil,NIL(2) | No(1) | Nil(1),50.0,1.0,,,,,,,,,,,
+D2a_2023_FormResponses1,41,INTERVENTION.2,str,4,99.55,3,0.0,No | NIL | Nil,NIL(2) | No(1) | Nil(1),50.0,1.0,,,,,,,,,,,
+D2a_2023_FormResponses1,42,GCS [V],float64,0,100.0,0,0.0,,,,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,43,GCS [M],float64,0,100.0,0,0.0,,,,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,44,GCS [Row 4],float64,0,100.0,0,0.0,,,,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,45,Unnamed: 45,float64,0,100.0,0,0.0,<PII redacted>,<PII redacted>,,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,46,Breathing,float64,0,100.0,0,0.0,,,,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,47,CR NO,float64,0,100.0,0,0.0,<PII redacted>,<PII redacted>,,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,48,Diagnosis,str,1,99.89,1,0.0,diarrhoea,diarrhoea(1),100.0,0.0,,,,,,,,,,,
+D2a_2023_FormResponses1,49,Disposition,float64,0,100.0,0,0.0,,,,0.0,,,,,,,,,,,
+D2b_2023_Sheet3,0,0,datetime64[us],435,1.14,435,101.1,2023-06-01 09:59:00.020 | 2023-06-01 10:04:31.481 | 2023-06-01 10:51:50.015 | 2023-06-01 11:09:38.128,,,,-9.223372036854776e+18,1689244845697250.0,1716475508751000.0,-1.031208997721975e+17,1720007959738750.0,1723370255453000.0,9.7890658319951e+17,0.0,5.0,-9.22,5.0
+D2b_2023_Sheet3,1,1,float64,435,1.14,2,100.0,0.0 | 1.0,,,,0.0,0.0,0.0,0.025,0.0,1.0,0.157,424.0,0.0,6.05,11.0
+D2b_2023_Sheet3,2,2,str,435,1.14,26,0.0,tshrumith@gmail.com | drsmdt99@gmail.com | smdt256@gmail.com | pvsk1998@gmail.com,abdulmuqsith171@gmail.com(65) | amtul.shaziya7@gmail.com(60) | sandhyaranimandula010@gmail.com(59) | talhathor5@gmail.com(55) | pambalaxman.p@gmail.com(43) | bhukyarajaramnayak00@gmail.com(28),14.9,0.0,,,,,,,,,,,
+D2b_2023_Sheet3,3,3,str,435,1.14,423,0.0,Zareena begum | Manopreethi | Ganta rajani | Ghousaiya begum,Meher unnisa(4) | Padma(3) | Ankus bee(2) | Raziya begum(2) | K padma(2) | P manasa(2),0.9,9.0,,,,,,,,,,,
+D2b_2023_Sheet3,4,4,float64,438,0.45,77,100.0,37.0 | 23.0 | 26.0 | 51.0,,,,7.0,35.0,49.0,48.565,63.0,96.0,18.624,0.0,0.0,-0.07,0.0
+D2b_2023_Sheet3,5,5,float64,435,1.14,1,100.0,0.0,,,,0.0,0.0,0.0,0.0,0.0,0.0,0.0,435.0,0.0,,0.0
+D2b_2023_Sheet3,6,6,float64,435,1.14,2,100.0,0.0 | 1.0,,,,0.0,0.0,0.0,0.11,0.0,1.0,0.314,387.0,0.0,2.49,48.0
+D2b_2023_Sheet3,7,7,str,435,1.14,371,0.0,"Tachypnea | Left renal calculi | Left upper limb pain,sob | Rt lower limb injury",SOB(16) | RTA(10) | CVA(8) | Abdominal pain(6) | Sob(5) | AKI(4),3.7,22.0,,,,,,,,,,,
+D2b_2023_Sheet3,8,8,float64,0,100.0,0,0.0,,,,0.0,,,,,,,,,,,
+D2b_2023_Sheet3,9,9,float64,438,0.45,92,100.0,105.0 | 74.0 | 78.0 | 86.0,,,,16.0,82.0,93.0,94.634,107.0,176.0,21.489,0.0,0.0,0.13,13.0
+D2b_2023_Sheet3,10,10,float64,152,65.45,2,100.0,0.0 | 1.0,,,,0.0,1.0,1.0,0.783,1.0,1.0,0.414,33.0,0.0,-1.37,33.0
+D2b_2023_Sheet3,11,11,object,435,1.14,113,0.7,140/70 | 120/80 | 150/100 | 110/80,110/70(49) | 120/80(27) | 130/80(23) | 110/80(21) | 100/70(21) | 130/90(20),11.3,4.0,,,,,,,,,,,
+D2b_2023_Sheet3,12,12,float64,435,1.14,33,100.0,100.0 | 95.0 | 99.0 | 94.0,,,,33.0,94.5,97.0,94.561,98.0,100.0,7.772,0.0,0.0,-4.18,49.0
+D2b_2023_Sheet3,13,13,float64,12,97.27,3,100.0,500.0 | 1.0 | 2.0,,,,1.0,1.0,2.0,43.083,2.0,500.0,143.892,0.0,0.0,3.02,1.0
+D2b_2023_Sheet3,14,14,float64,435,1.14,20,100.0,24.0 | 18.0 | 17.0 | 20.0,,,,12.0,17.0,18.0,19.271,20.0,54.0,3.998,0.0,0.0,2.69,35.0
+D2b_2023_Sheet3,15,15,float64,435,1.14,2,100.0,1.0 | 0.0,,,,0.0,0.0,0.0,0.375,1.0,1.0,0.485,272.0,0.0,0.52,0.0
+D2b_2023_Sheet3,16,16,str,13,97.05,10,0.0,Came from rheumat opd | Patient from urology opd 8wk 3 days preg | K/c/o migraine 25% stenosis of rca | Rta slip and fall from bike,(5) | Came from rheumat opd(1) | Patient from urology opd 8wk 3 days pregnant(1) | K/c/o migraine 25% stenosis of rca(1) | Rta slip and fall from bike(1) | Sob(1),38.5,1.0,,,,,,,,,,,
+D3_2024_FormResponses1,0,Timestamp,datetime64[us],1125,0.71,1125,100.7,2024-12-01 12:36:39.779 | 2024-12-01 13:20:16.249 | 2024-12-09 17:23:47.195 | 2025-02-12 13:16:50.026,,,,-9.223372036854776e+18,1743330453879000.0,1744182698467000.0,-6.339321363208414e+16,1744958559238000.0,1755249538249000.0,7.727783445525733e+17,0.0,8.0,-11.77,59.0
+D3_2024_FormResponses1,1,Email Address,str,1125,0.71,35,0.0,<PII redacted>,<PII redacted>,7.8,0.0,,,,,,,,,,,
+D3_2024_FormResponses1,2,Name ,object,1124,0.79,1106,0.3,<PII redacted>,<PII redacted>,0.3,17.0,,,,,,,,,,,
+D3_2024_FormResponses1,3,CR Number,object,1125,0.71,1052,99.9,<PII redacted>,,,,900050897.0,331012401263584.0,331012500385318.5,611261786915730.9,331012500442784.0,3.310122012012036e+17,9866276935572088.0,0.0,0.0,33.46,201.0
+D3_2024_FormResponses1,4,Age,object,1125,0.71,86,99.0,68 | 41 | 45 | 56,,,,6.0,36.0,50.0,49.424,63.0,95.0,17.5,0.0,0.0,-0.08,0.0
+D3_2024_FormResponses1,5,Sex,str,1125,0.71,3,0.0,Female | Male | male,Male(716) | Female(408) | male(1),63.6,1.0,,,,,,,,,,,
+D3_2024_FormResponses1,6,Complaint/Diagnosis,str,1125,0.71,998,0.0,Severe Headache - SAH with PCOM Aneurysm | ?MSK PAIN | H | Hsv encephalopathy ,RTA(15) | Chest pain(13) | CVA(12) | Sob(10) | SOB(7) | Abdominal pain(6),1.3,58.0,,,,,,,,,,,
+D3_2024_FormResponses1,7,PAIN SCORE NRS,float64,1125,0.71,10,100.0,5.0 | 6.0 | 4.0 | 1.0,,,,1.0,1.0,3.0,3.688,6.0,10.0,2.911,0.0,0.0,0.59,0.0
+D3_2024_FormResponses1,8,Airway,str,1125,0.71,6,0.0,"Patent | Threatened | Intubated outside | Patent, Intubated outside","Patent(1051) | Intubated outside(36) | Threatened(28) | Patent, Threatened(5) | Patent, Intubated outside(3) | Threatened, Intubated outside(2)",93.4,0.0,,,,,,,,,,,
+D3_2024_FormResponses1,9,Intervention (Airway),str,89,92.14,14,0.0,"Suction | Airway Opening | Endotracheal Intubation | Suction, OPA/NPA","Endotracheal Intubation(23) | Airway Opening, Suction, OPA/NPA, Endotracheal Intubation(12) | Suction(11) | Airway Opening(11) | Suction, OPA/NPA, Endotracheal Intubation(11) | Suction, OPA/NPA(7)",25.8,0.0,,,,,,,,,,,
+D3_2024_FormResponses1,10,Respiratory Rate,object,1125,0.71,37,99.3,20 | 18 | 22 | 26,,,,0.0,18.0,20.0,20.166,22.0,65.0,4.137,1.0,0.0,2.56,48.0
+D3_2024_FormResponses1,11,Bilateral Air Entry,str,1125,0.71,3,0.0,"Present | Present, Absent | Absent","Present(1113) | Absent(7) | Present, Absent(5)",98.9,0.0,,,,,,,,,,,
+D3_2024_FormResponses1,12,Saturation,float64,1125,0.71,39,100.0,97.0 | 96.0 | 88.0 | 98.0,,,,0.0,92.0,96.0,93.159,98.0,100.0,8.24,1.0,0.0,-3.75,92.0
+D3_2024_FormResponses1,13,Other,str,27,97.62,5,0.0,"Trachea deviation | Chest compression Test positive | Subcutaneous Emphysema | Chest compression Test positive, None","Chest compression Test positive(22) | Subcutaneous Emphysema(2) | Trachea deviation(1) | Chest compression Test positive, None(1) | Trachea deviation, None(1)",81.5,0.0,,,,,,,,,,,
+D3_2024_FormResponses1,14,Intervention (Breathing),str,339,70.08,11,0.0,"NIV | Face mask/cannula | Invasive Ventilation | Face mask/cannula, Nebulization","Face mask/cannula(240) | Invasive Ventilation(53) | NIV(19) | Face mask/cannula, Nebulization(9) | Face mask/cannula, NIV(6) | Nebulization(4)",70.8,0.0,,,,,,,,,,,
+D3_2024_FormResponses1,15,Pulse rate,float64,1125,0.71,119,100.0,69.0 | 93.0 | 33.0 | 67.0,,,,11.0,80.0,92.0,94.956,107.0,243.0,22.641,0.0,0.0,0.86,29.0
+D3_2024_FormResponses1,16,Blood Pressure,object,1125,0.71,125,0.7,110/80 | 120/90 | 345 | 120/80,110/70(118) | 130/80(80) | 130/90(65) | 120/80(62) | 100/70(55) | 100/60(53),10.5,8.0,,,,,,,,,,,
+D3_2024_FormResponses1,17,Capillary Refill Time,str,1125,0.71,2,0.0,<3 seconds | >3 seconds,<3 seconds(1066) | >3 seconds(59),94.8,0.0,,,,,,,,,,,
+D3_2024_FormResponses1,18,Other.1,str,28,97.53,4,0.0,"Pelvic compression | Neck veins | Bleed | Bleed, Pelvic compression","Pelvic compression(14) | Bleed(10) | Neck veins(3) | Bleed, Pelvic compression(1)",50.0,0.0,,,,,,,,,,,
+D3_2024_FormResponses1,19,Intervention (Circulation),str,1004,11.39,17,0.0,"IV line, IV fluid | IV line | IV line, IV fluid, Blood Transfusion | IV line, IV fluid, Vasopressors","IV line, IV fluid(653) | IV line(272) | IV line, IV fluid, Vasopressors(25) | IV fluid(10) | IV line, None(7) | IV line, IV fluid, Splinting(7)",65.0,0.0,,,,,,,,,,,
+D3_2024_FormResponses1,20,GCS  E,float64,1125,0.71,4,100.0,4.0 | 3.0 | 1.0 | 2.0,,,,1.0,4.0,4.0,3.765,4.0,4.0,0.711,0.0,0.0,-3.15,135.0
+D3_2024_FormResponses1,21,GCS V,object,1125,0.71,8,95.3,5 | 2 | 1 | 4,,,,1.0,5.0,5.0,4.611,5.0,6.0,1.047,0.0,0.0,-2.55,150.0
+D3_2024_FormResponses1,22,GCS M,float64,1125,0.71,6,100.0,6.0 | 1.0 | 5.0 | 3.0,,,,1.0,6.0,6.0,5.725,6.0,6.0,0.915,0.0,0.0,-4.15,150.0
+D3_2024_FormResponses1,23,GCS,float64,7,99.38,3,100.0,15.0 | 6.0 | 10.0,,,,6.0,12.5,15.0,13.0,15.0,15.0,3.606,0.0,0.0,-1.27,1.0
+D3_2024_FormResponses1,24,Pupils,str,1125,0.71,45,0.0,"BERTL | fixed b/l | Anisocoria - rt eye -2mm , lt eye - 4mm | Rt pupil - ns fixed, LT pupil-ns sluggis","BERTL(1080) | Anisocoria(2) | NRL(2) | Sluggish(2) | fixed b/l(1) | Anisocoria - rt eye -2mm , lt eye - 4mm(1)",96.0,4.0,,,,,,,,,,,
+D3_2024_FormResponses1,25,Focal Neurological Deficit,str,1125,0.71,2,0.0,No | Yes,No(965) | Yes(160),85.8,0.0,,,,,,,,,,,
+D3_2024_FormResponses1,26,Intervention (Disability),str,1021,9.89,138,0.0,Fhil | Alert consious | Pain management  | Pain management and Xrays,No(203) | Nil(169) | -(126) | .(117) | Nill(89) | Glucose monitoring(58),19.9,12.0,,,,,,,,,,,
+D3_2024_FormResponses1,27,Temperature in Fahrenheit,float64,1125,0.71,71,100.0,98.5 | 99.0 | 98.4 | 97.5,,,,4.0,98.0,98.2,97.985,98.6,108.0,4.084,0.0,0.0,-16.57,249.0
+D3_2024_FormResponses1,28,Log Roll,object,1049,7.41,65,0.1,Bk | No | Normal | Normal ,No(540) | -(140) | .(121) | (37) | Nil(36) | Not required(24),51.5,9.0,,,,,,,,,,,
+D3_2024_FormResponses1,29,Intervention (Exposure),object,1006,11.21,96,0.1,Bv | Nil | None  | NIV mask with Nebulization Duolin and Bu,No(223) | Nil(157) | -(133) | .(130) | Nill(91) | (39),22.2,16.0,,,,,,,,,,,
+D3_2024_FormResponses1,30,Area Triaged,str,1125,0.71,3,0.0,Table 2 | Red Triage | Table 1,Red Triage(583) | Table 1(372) | Table 2(170),51.8,0.0,,,,,,,,,,,
+D3_2024_FormResponses1,31,ESI Triage Category,object,1123,0.88,6,99.9,NS opinion  | 3 | 5 | 2,,,,1.0,2.0,3.0,2.559,3.0,5.0,0.866,0.0,0.0,0.03,14.0
+D3_2024_FormResponses1,32,Column 31,str,13,98.85,1,0.0,Option 1,Option 1(13),100.0,0.0,,,,,,,,,,,
+D3_2024_FormResponses1,33,GRBS (mg/dL),object,1123,0.88,244,97.2,33 | 171 | 111 | Normal,,,,12.0,97.0,113.0,134.553,145.0,543.0,70.359,0.0,0.0,2.67,98.0
+D3_2024_FormResponses1,34,Unnamed: 34,str,318,71.93,168,0.0,<PII redacted>,<PII redacted>,5.3,1.0,,,,,,,,,,,
+D3_2024_FormResponses1,35,Disposition,str,261,76.96,17,0.0,Neurology | Neurosurgery | Surgical Gastroenterology | General Medicine,General Medicine(61) | Neurology(38) | Neurosurgery(28) | Discharge(28) | Cardiology(21) | Nephrology(20),23.4,1.0,,,,,,,,,,,
